@@ -36,13 +36,22 @@ smtp_tls_CApath=/etc/ssl/certs
 smtp_tls_security_level=may
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
+virtual_mailbox_domains = /etc/postfix/virtual_mailbox_domains
+virtual_alias_maps = hash:/etc/postfix/valias
+virtual_mailbox_maps = hash:/etc/postfix/vmailbox
+virtual_mailbox_base = /var/mail/vhosts
+virtual_minimum_uid = 100
+virtual_uid_maps = static:5000
+virtual_gid_maps = static:5000
+# An alternative would be to pass messages to dovecot for storage:
+# virtual_transport = lmtp:unix:private/dovecot-lmtp
 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = mta1.jkristian.com
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, jkristian.com, mta1.jkristian.com, localhost.jkristian.com, localhost
+mydestination = localhost.$mydomain, localhost
 relayhost = 
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0

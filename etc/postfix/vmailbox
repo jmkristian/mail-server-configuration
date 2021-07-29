@@ -1,0 +1,4 @@
+# postmaster@jkristian.com    jkristian.com/postmaster/
+# All other emails are collected into one mailbox:
+@jkristian.com                jkristian.com/getmail/
+# Another computer will fetch all these messages and relay them elsewhere.
