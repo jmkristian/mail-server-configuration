@@ -1,0 +1,16 @@
+#!/bin/sh
+# Compare configuration files with this repository.
+if [ "$1" = "" ]; then
+    FROM=/
+else
+    FROM="$1"
+    shift
+fi
+cd `dirname "$0"` || exit $?
+for FILE in `find etc -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'` ; do
+    diff > /dev/null 2>&1 "$FROM$FILE" "$FILE" || {
+	echo
+	echo diff "$@" "$FROM$FILE" "$FILE"
+        diff "$@" "$FROM$FILE" "$FILE"
+    }
+done

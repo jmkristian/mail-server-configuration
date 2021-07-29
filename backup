@@ -1,0 +1,7 @@
+#!/bin/sh
+# Copy all configuration files from $FROM" to this repository.
+FROM="${1:-/}"
+cd `dirname "$0"` || exit $?
+mkdir -p etc/dovecot etc/postfix
+cp -pr "$FROM"etc/dovecot/* etc/dovecot/
+cp -pr "$FROM"etc/postfix/* etc/postfix/

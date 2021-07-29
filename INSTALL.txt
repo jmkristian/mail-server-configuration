@@ -1,0 +1,26 @@
+Here's how the packages were installed, as recommended by:
+https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubuntu-20-04
+
+apt-get install -y postfix
+# select "Internet Site"
+# mail domain name: jkristian.com
+
+apt-get install -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
+# By the way, here's how to un-install it completely (including configuration files):
+# apt-get purge -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
+# apt-get autoremove --purge -y
+
+groupadd -g 5000 vmail
+useradd -r -g vmail -u 5000 vmail -d /var/mail/vhosts -c "virtual mail user"
+mkdir -p /var/mail/vhosts/jkristian.com
+chown -R vmail:vmail /var/mail/vhosts/
+# Create /etc/dovecot/users, containing:
+getmail@jkristian.com:{plain}STRONG_PASSWORD
+
+# Deploy the new configuration files (./deploy).
+# Test:
+service dovecot start; service postfix start
+telnet `hostname` 587
+ehlo jkristian.com
+quit
+service postfix stop; service dovecot stop
