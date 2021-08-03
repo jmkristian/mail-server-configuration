@@ -22,6 +22,15 @@ $config = array();
 // Do not set db_dsnw here, use dpkg-reconfigure roundcube-core to configure database!
 include_once("/etc/roundcube/debian-db-roundcube.php");
 
+// Permit access via HTTP (without encryption):
+$config['force_https'] = false;
+
+// tell PHP that it should work as under secure connection
+// even if it doesn't recognize it as secure ($_SERVER['HTTPS'] is not set)
+// e.g. when you're running Roundcube behind a https proxy
+// this option is mutually exclusive to 'force_https' and only either one of them should be set to true.
+// $config['use_https'] = false;
+
 // The IMAP host chosen to perform the log-in.
 // Leave blank to show a textbox at login, give a list of hosts
 // to display a pulldown menu or set one host as string.
@@ -33,7 +42,7 @@ include_once("/etc/roundcube/debian-db-roundcube.php");
 // %d - domain (http hostname $_SERVER['HTTP_HOST'] without the first part)
 // %s - domain name after the '@' from e-mail address provided at login screen
 // For example %n = mail.domain.tld, %t = domain.tld
-$config['default_host'] = '';
+$config['default_host'] = 'localhost';
 
 // SMTP server host (for sending mails).
 // Enter hostname with prefix ssl:// to use Implicit TLS, or use

@@ -34,5 +34,9 @@ apt-get install -y php-{common,mysql,xml,xmlrpc,curl,gd,imagick,cli,dev,imap,mbs
 apt-get install -y roundcube
 # Select 'Yes' configure database with dbconfig-common.
 # Enter password = PASSWORD
+# Deploy the new configuration files (./deploy).
+service apache2 restart
+# Test: browse http://`hostname`/info.php
+# Test: browse http://`hostname`/email
 
 apt-get install -y slapd ldap-utils
