@@ -1,16 +1,19 @@
 #!/bin/sh
 # Compare configuration files with this repository.
-if [ "$1" = "" ]; then
-    FROM=/
-else
-    FROM="$1"
-    shift
-fi
+FROM="$1"
+TO="${2:-.}"
+[ $# -gt 0 ] && shift
+[ $# -gt 0 ] && shift
+# The shifts enable "$@" to be passed as options to diff (below).
 cd `dirname "$0"` || exit $?
-for FILE in `find etc -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'` ; do
-    diff > /dev/null 2>&1 "$FROM$FILE" "$FILE" || {
+# echo "FROM=$FROM" "TO=$TO"
+for FILE in \
+    `find "$TO"/etc "$TO"/var -type f | sed -e "s:$TO/::" | grep -v '~$' | grep -v '^etc/postfix/.*\.db$'`
+do
+    # echo "FILE=$FILE"
+    diff > /dev/null 2>&1 "$FROM"/"$FILE" "$TO"/"$FILE" || {
 	echo
-	echo diff "$@" "$FROM$FILE" "$FILE"
-        diff "$@" "$FROM$FILE" "$FILE"
+	echo diff "$@" "$FROM"/"$FILE" "$TO"/"$FILE"
+        diff 2>&1 "$@" "$FROM"/"$FILE" "$TO"/"$FILE"
     }
 done

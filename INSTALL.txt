@@ -14,8 +14,6 @@ groupadd -g 5000 vmail
 useradd -r -g vmail -u 5000 vmail -d /var/mail/vhosts -c "virtual mail user"
 mkdir -p /var/mail/vhosts/jkristian.com
 chown -R vmail:vmail /var/mail/vhosts/
-# Create /etc/dovecot/users, containing:
-getmail@jkristian.com:{plain}STRONG_PASSWORD
 
 # Deploy the new configuration files (./deploy).
 # Test:
@@ -24,3 +22,6 @@ telnet `hostname` 587
 ehlo jkristian.com
 quit
 service postfix stop; service dovecot stop
+
+apt-get install -y apache2
+# Test: browse http://`hostname`
