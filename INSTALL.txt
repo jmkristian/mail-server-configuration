@@ -25,3 +25,6 @@ service postfix stop; service dovecot stop
 
 apt-get install -y apache2
 # Test: browse http://`hostname`
+
+apt-get install -y php
+apt-get install -y php-{common,mysql,xml,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl}
