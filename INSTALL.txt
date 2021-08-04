@@ -14,6 +14,9 @@ groupadd -g 5000 vmail
 useradd -r -g vmail -u 5000 vmail -d /var/mail/vhosts -c "virtual mail user"
 mkdir -p /var/mail/vhosts/jkristian.com
 chown -R vmail:vmail /var/mail/vhosts/
+# Create /etc/postfix/sasl_passwd containing:
+[mta1.jkristian.com]:587 getmail@jkristian.com:STRONG_PASSWORD
+[mta1.jkristian.com]     getmail@jkristian.com:STRONG_PASSWORD
 
 # Deploy the new configuration files (./deploy).
 # Test:

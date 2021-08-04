@@ -8,6 +8,6 @@ for FILE in `find etc -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'`; d
 	cp -p "$FILE" "$INTO"/"$FILE"
     }
 done
+postmap "$INTO"/etc/postfix/sasl_passwd
+postmap "$INTO"/etc/postfix/transport
 postmap "$INTO"/etc/postfix/virtual_mailbox_domains
-postmap "$INTO"/etc/postfix/valias
-postmap "$INTO"/etc/postfix/vmailbox
