@@ -69,7 +69,7 @@ $config['product_name'] = 'Roundcube Webmail';
 // in the session record (and the client cookie if remember password is enabled).
 // please provide a string of exactly 24 chars.
 // YOUR KEY MUST BE DIFFERENT THAN THE SAMPLE VALUE FOR SECURITY REASONS
-$config['des_key'] = 'urSP8X7UzVKnDgc5s1k71adO';
+$config['des_key'] = 'GZrXd3i5lqiIotCogODLFQiM';
 
 // List of active plugins (in plugins/ directory)
 // Debian: install roundcube-plugins first to have any
