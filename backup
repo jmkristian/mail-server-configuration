@@ -6,6 +6,7 @@ cd `dirname "$0"` || exit $?
 mkdir -p\
       "$INTO"/etc/apache2\
       "$INTO"/etc/dovecot\
+      "$INTO"/etc/ldap\
       "$INTO"/etc/postfix\
       "$INTO"/etc/roundcube\
       "$INTO"/var/www/html
@@ -14,8 +15,12 @@ cp -pr "$FROM"/etc/apache2/sites-available "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/apache2/sites-enabled "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/dovecot/*   "$INTO"/etc/dovecot/
 cp -pr "$FROM"/etc/postfix/*   "$INTO"/etc/postfix/
+cp -pr "$FROM"/etc/ldap/*      "$INTO"/etc/ldap/
 cp -pr "$FROM"/etc/roundcube/* "$INTO"/etc/roundcube/
 cp -pr "$FROM"/var/www/html/*   "$INTO"/var/www/html/
 
 rm -f etc/dovecot/users
+rm -f etc/postfix/post-install
+rm -f etc/postfix/postfix-files
+rm -f etc/postfix/postfix-script
 rm -f etc/postfix/sasl_passwd
