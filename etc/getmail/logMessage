@@ -1,0 +1,4 @@
+#!/bin/sh
+echo  >> /var/log/getmailMessage.log ""
+echo  >> /var/log/getmailMessage.log sendmail "$@"
+cat - >> /var/log/getmailMessage.log
