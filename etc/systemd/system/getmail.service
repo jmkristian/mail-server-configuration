@@ -1,0 +1,11 @@
+[Unit]
+Description=Fetch email from mta1.jkristian.com
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/etc/getmail/poll mta1.jkristian.com
+
+[Install]
+Alias=getmail
+WantedBy=multi-user.target

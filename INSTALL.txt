@@ -42,4 +42,9 @@ service apache2 restart
 # Test: browse http://`hostname`/info.php
 # Test: browse http://`hostname`/email
 
+apt-get install -y getmail
+./deploy
+service getmail start
+systemctl enable getmail
+
 apt-get install -y slapd ldap-utils
