@@ -29,8 +29,61 @@ smtpd_tls_key_file=/etc/letsencrypt/live/mta1.jkristian.com/privkey.pem
 smtpd_tls_security_level=may
 
 smtpd_sasl_auth_enable = yes
+# But don't require clients to authenticate.
+# The putmail client should, but other clients might not.
+# smtpd_sasl_security_options = noanonymous noplaintext
+# smtpd_sasl_tls_security_options = noanonymous
+
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
+
+#####################################################################
+# An alternative is Cyrus/SASL authentication. It's more complicated.
+# smtpd_sasl_type = cyrus
+# Make Cyrus/SASL read configuration data from smtpd.conf:
+# smtpd_sasl_path = smtpd
+
+# http://vinvin.tf/projects/postfix_sasl.html is informative.
+# Cyrus delegates authentication to SASL (libsasl).
+# smtpd.conf might be located in any one of:
+#   /etc/postfix/sasl
+#   /etc/postfix/sasl2
+#   /etc/sasl2
+#   /usr/lib/sasl
+#   /usr/lib/sasl2
+# ... depending on the version of Postfix, Cyrus and/or Ubuntu.
+# According to the documentation, one can specify where to find it:
+#   cyrus_sasl_config_path = /usr/lib/sasl2
+# But that doesn't actually work.
+# Also, smtpd might run with chroot /var/spool/postfix.
+# To cope with this, create /var/spool/postfix/usr/lib/sasl2/smtpd.conf
+# and create symbolic links to it from all the other names, thus:
+#   ln -s /var/spool/postfix/usr/lib/sasl2 /etc/postfix/sasl
+#   ln -s /var/spool/postfix/usr/lib/sasl2 /etc/postfix/sasl2
+#   ln -s /var/spool/postfix/usr/lib/sasl2 /etc/sasl2
+#   ln -s /var/spool/postfix/usr/lib/sasl2 /usr/lib/sasl
+#   ln -s /var/spool/postfix/usr/lib/sasl2 /usr/lib/sasl2
+#   ln -s ../../usr/lib/sasl2 /var/spool/postfix/etc/postfix/sasl
+#   ln -s ../../usr/lib/sasl2 /var/spool/postfix/etc/postfix/sasl2
+#   ln -s    ../usr/lib/sasl2 /var/spool/postfix/etc/sasl2
+#   ln -s               sasl2 /var/spool/postfix/usr/lib/sasl
+
+# Clients should send an authentication identity name@realm.
+# This isn't necessarily an email address, just a user name.
+# The server can use a default realm, if the client doesn't send one:
+# smtpd_sasl_local_domain = jkristian.com
+
+# For debugging, try inserting this into smtpd.conf:
+# mech_list: PLAIN LOGIN
+# or:
+# mech_list: DIGEST-MD5
+#####################################################################
+
+# To trace system calls made by smtpd, set:
+# debugger_command =
+#    PATH=/bin:/usr/bin:/usr/local/bin;
+#    (strace -f -p $process_id 2>&1 | logger -p mail.info) & sleep 5
+# ... and append -D to the smtpd lines in master.cf
 
 smtp_tls_CApath=/etc/ssl/certs
 smtp_tls_security_level=may

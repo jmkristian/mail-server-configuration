@@ -16,6 +16,7 @@ mkdir -p /var/mail/vhosts/jkristian.com
 chown -R vmail:vmail /var/mail/vhosts/
 # Create /etc/dovecot/users, containing:
 getmail@jkristian.com:{plain}STRONG_PASSWORD
+# ... with a long unguessable password in place of STRONG_PASSWORD.
 
 # Deploy the new configuration files (./deploy).
 # Test:
@@ -23,4 +24,24 @@ service dovecot start; service postfix start
 telnet `hostname` 587
 ehlo jkristian.com
 quit
+# Configure an MUA (e.g. Outlook or Thunderbird) to authenticate
+# to `hostname` as getmail@jkristian.com with STRONG_PASSWORD.
 service postfix stop; service dovecot stop
+
+####################################################################
+# An alternative is Cyrus/SASL authentication. It's more complicated.
+# Uncomment the relevant lines in /etc/postfix/main.cf,
+# and comment out the lines for dovecot.
+apt-get install -y sasl2-bin
+adduser postfix sasl
+# Edit /etc/default/saslauthd to contain:
+START=yes
+MECHANISMS="sasldb"
+OPTIONS="-c -m /var/run/saslauthd"
+
+saslpasswd2 -c -u `postconf -h mydomain` getmail@jkristian.com
+# Enter a long unguessable password when prompted.
+# Test:
+service saslauthd start
+testsaslauthd -u getmail -r jkristian.com -p STRONG_PASSWORD
+# ... with the password you entered to saslpasswd2 in place of STRONG_PASSWORD.
