@@ -1,6 +1,15 @@
 Here's how the packages were installed, as recommended by:
 https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubuntu-20-04
 
+# Configure the firewall:
+ufw allow ssh comment "ssh"
+ufw allow smtp comment "email forwarding"
+ufw allow from 24.6.134.5 proto tcp to any port 993 comment "IMAP"
+ufw allow from 24.6.134.5 proto tcp to any port 143 comment "IMAP"
+ufw allow from 24.6.134.5 proto tcp to any port 587 comment "email submission"
+ufw enable
+apt-get install -y fail2ban
+
 apt-get install -y postfix
 # select "Internet Site"
 # mail domain name: jkristian.com
