@@ -24,22 +24,40 @@ compatibility_level = 2
 
 
 # TLS parameters
-smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
-smtpd_tls_security_level=may
-
+# smtp_use_tls=yes obsoleted by:
+smtp_tls_security_level=encrypt
 smtp_tls_CApath=/etc/ssl/certs
-smtp_tls_security_level=may
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
+# smtpd_use_tls=no obsoleted by:
+smtpd_tls_security_level=none
+# smtpd_tls_cert_file=/etc/letsencrypt/live/postoffice.jkristian.com/certificate.pem
+# smtpd_tls_key_file=/etc/letsencrypt/live/postoffice.jkristian.com/private_key.pem
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated reject_unauth_destination
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 
-smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-myhostname = mta1.jkristian.com
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+
+# Some @domains are handled by Dovecot:
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+virtual_mailbox_domains = /etc/postfix/virtual_mailbox_domains
+
+# The rest are relayed to one MTA (regardless of the destination address).
+relayhost = [mta1.jkristian.com]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_type = cyrus
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous, noplaintext
+smtp_sasl_tls_security_options = noanonymous
+
+myhostname = postoffice.jkristian.com
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = $myhostname, jkristian.com, mta1.jkristian.com, localhost.jkristian.com, localhost
-relayhost = 
+mydomain = jkristian.com
+mydestination = localhost.$mydomain, localhost
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0
 recipient_delimiter = +

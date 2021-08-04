@@ -1,0 +1,6 @@
+# Internal delivery.
+jkristian.com  :
+.jkristian.com :
+# External delivery.
+* smtp:[mta1.jkristian.com]:587
+# The brackets [] say 'don't look for MX records'
