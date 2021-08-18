@@ -2,6 +2,12 @@
 # Copy all configuration files from $FROM" to this repository.
 FROM="${1:-/}"
 cd `dirname "$0"` || exit $?
-mkdir -p etc/dovecot etc/postfix
+mkdir -p etc/dovecot etc/postfix etc/opendkim
 cp -pr "$FROM"etc/dovecot/* etc/dovecot/
 cp -pr "$FROM"etc/postfix/* etc/postfix/
+cp -p  "$FROM"etc/opendkim.conf etc/
+cp -pr "$FROM"etc/opendkim/* etc/opendkim/
+
+rm -f etc/dovecot/users
+rm -f etc/postfix/makedefs.out etc/postfix/sasl etc/postfix/sasl2 etc/postfix/*.db
+rm -f etc/opendkim/mail
