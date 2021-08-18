@@ -10,4 +10,4 @@ cp -pr "$FROM"etc/opendkim/* etc/opendkim/
 
 rm -f etc/dovecot/users
 rm -f etc/postfix/makedefs.out etc/postfix/sasl etc/postfix/sasl2 etc/postfix/*.db
-rm -f etc/opendkim/mail
+rm -f etc/opendkim/*.private
