@@ -1,12 +1,16 @@
 Here's how the packages were installed, as recommended by:
 https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubuntu-20-04
 
+# Configure the DNS server for jkristian.com to publish the MTA's address:
+mta1.jkristian.com IN A <IP address>
+
 # Configure the firewall:
+POSTOFFICE=24.6.134.5
 ufw allow ssh comment "ssh"
 ufw allow smtp comment "email forwarding"
-ufw allow from 24.6.134.5 proto tcp to any port 993 comment "IMAP"
-ufw allow from 24.6.134.5 proto tcp to any port 143 comment "IMAP"
-ufw allow from 24.6.134.5 proto tcp to any port 587 comment "email submission"
+ufw allow from $POSTOFFICE proto tcp to any port 993 comment "IMAP"
+ufw allow from $POSTOFFICE proto tcp to any port 143 comment "IMAP"
+ufw allow from $POSTOFFICE proto tcp to any port 587 comment "email submission"
 ufw enable
 apt-get install -y fail2ban
 
@@ -29,15 +33,15 @@ getmail@jkristian.com:{plain}STRONG_PASSWORD
 
 # Deploy the new configuration files (./deploy).
 # Test:
-service dovecot start; service postfix start
+service dovecot start
+service postfix start
 telnet `hostname` 587
-ehlo jkristian.com
-quit
+EHLO postoffice.jkristian.com
+QUIT
 # Configure an MUA (e.g. Outlook or Thunderbird) to authenticate
 # to `hostname` as getmail@jkristian.com with STRONG_PASSWORD.
-service postfix stop; service dovecot stop
 
-####################################################################
+((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((
 # An alternative is Cyrus/SASL authentication. It's more complicated.
 # Uncomment the relevant lines in /etc/postfix/main.cf,
 # and comment out the lines for dovecot.
@@ -54,3 +58,36 @@ saslpasswd2 -c -u `postconf -h mydomain` getmail@jkristian.com
 service saslauthd start
 testsaslauthd -u getmail -r jkristian.com -p STRONG_PASSWORD
 # ... with the password you entered to saslpasswd2 in place of STRONG_PASSWORD.
+))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+
+# Encourage other MTAs to accept messages forwarded from this MTA:
+apt-get install -y opendkim opendkim-tools
+./deploy
+SELECTOR=`date "+%Y%m%d"`
+{ # Generate a new key pair:
+  cd /etc/opendkim
+  opendkim-genkey -r -h sha256 -s $SELECTOR -d mta1.jkristian.com
+  # Tidy up $SELECTOR.txt to contain:
+  # $SELECTOR._domainkey.mta1	IN	TXT	"v=DKIM1; blah blah blah" ; comment
+  # ... instead of:
+  # $SELECTOR._domainkey.mta1	IN	TXT	( "v=DKIM1; blah" "blah" "blah" ) ; comment
+  # Configure OpenDKIM to point to the private key: 
+  echo > KeyTable mta1.jkristian.com mta1.jkristian.com:$SELECTOR:/etc/opendkim/$SELECTOR.private
+} # return to this git repository
+# Check in the public key you just created:
+./backup
+mkdir -p /var/spool/postfix/opendkim
+ln -s /var/spool/postfix/opendkim /etc/postfix/opendkim
+chown opendkim:root /var/spool/postfix/opendkim
+usermod -G opendkim postfix
+service opendkim restart
+service postfix restart
+
+# Configure the DNS server for jkristian.com to publish DNS records:
+jkristian.com IN MX 10 mta1.jkristian.com.
+jkristian.com IN SPF "v=spf1 mx a ?all"
+# Copied from /etc/opendkim/$SELECTOR.txt
+$SELECTOR._domainkey.mta1.jkristian.com IN TXT "v=DKIM1; blah blah blah"
+
+# Ask the service that hosts mta1 to publish a reverse DNS lookup:
+<IP address>.in-addr.arpa IN PTR mta1.jkristian.com.
