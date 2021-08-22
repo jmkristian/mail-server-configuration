@@ -1,0 +1,62 @@
+dn: cn=dovecot,dc=jkristian,dc=com
+objectClass: organizationalRole
+objectClass: simpleSecurityObject
+cn: dovecot
+description: Dovecot Message Delivery Agent
+userPassword: pZD9uu4y9wUBdLQf
+
+dn: ou=groups,dc=jkristian,dc=com
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=users,dc=jkristian,dc=com
+objectClass: organizationalUnit
+ou: users
+
+dn: uid=postmaster,ou=users,dc=jkristian,dc=com
+objectClass: inetOrgPerson
+uid: postmaster
+cn: -
+sn: -
+userPassword: postmaster
+mail: postmaster@jkristian.com
+
+dn: uid=nz6j,ou=users,dc=jkristian,dc=com
+objectClass: inetOrgPerson
+uid: nz6j
+cn: -
+sn: -
+userPassword: nz6j
+mail: nz6j@jkristian.com
+
+dn: uid=w6jmk,ou=users,dc=jkristian,dc=com
+objectClass: inetOrgPerson
+uid: w6jmk
+cn: -
+sn: -
+userPassword: w6jmk
+mail: w6jmk@jkristian.com
+
+dn: uid=a,ou=users,dc=jkristian,dc=com
+objectClass: inetOrgPerson
+uid: a
+cn: -
+sn: -
+userPassword: alpha
+mail: a@jkristian.com
+
+dn: uid=b,ou=users,dc=jkristian,dc=com
+objectClass: inetOrgPerson
+uid: b
+cn: -
+sn: -
+userPassword: bravo
+mail: b@jkristian.com
+
+dn: uid=c,ou=users,dc=jkristian,dc=com
+objectClass: inetOrgPerson
+uid: c
+cn: -
+sn: -
+userPassword: charlie
+mail: c@jkristian.com
