@@ -48,3 +48,16 @@ service getmail start
 systemctl enable getmail
 
 apt-get install -y slapd ldap-utils
+dpkg-reconfigure slapd
+# domain = jkristian.com
+PASSWORD=whatever you entered into dpkg-reconfigure
+# Add some data to the LDAP directory:
+ldapadd -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -f ldap/users.ldif
+# Authorize Dovecot to read passwords:
+ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f ldap/access.ldif
+# Check the results:
+ldapsearch -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -LLL -b "dc=jkristian,dc=com"
+ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -w pZD9uu4y9wUBdLQf -LLL -b "dc=jkristian,dc=com" userPassword
+# To delete all the data (if needed):
+ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD cn=dovecot,dc=jkristian,dc=com
+ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -r ou=users,dc=jkristian,dc=com
