@@ -51,10 +51,10 @@ apt-get install -y slapd ldap-utils
 dpkg-reconfigure slapd
 # domain = jkristian.com
 PASSWORD=whatever you entered into dpkg-reconfigure
-# Add some data to the LDAP directory:
-ldapadd -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -f ldap/users.ldif
-# Authorize Dovecot to read passwords:
+# Enable Dovecot to search by mail and read passwords:
 ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f ldap/access.ldif
+# Add Dovecot and some users to the LDAP directory:
+ldapadd -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -f ldap/users.ldif
 # Check the results:
 ldapsearch -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -LLL -b "dc=jkristian,dc=com"
 ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -w pZD9uu4y9wUBdLQf -LLL -b "dc=jkristian,dc=com" userPassword
@@ -62,4 +62,6 @@ ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -w pZD9uu4y9wUBdLQf -LLL -b "d
 ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD cn=dovecot,dc=jkristian,dc=com
 ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -r ou=users,dc=jkristian,dc=com
 
+# Configure Dovecot to use LDAP for authenticating users:
 apt-get install -y dovecot-ldap
+./deploy

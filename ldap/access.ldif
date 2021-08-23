@@ -11,3 +11,6 @@ olcAccess: {0}to attrs=userPassword
   by dn.exact=cn=dovecot,dc=jkristian,dc=com read
   by * none
 -
+add: olcDbIndex
+olcDbIndex: mail eq
+-
