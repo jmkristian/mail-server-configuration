@@ -61,3 +61,5 @@ ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -w pZD9uu4y9wUBdLQf -LLL -b "d
 # To delete all the data (if needed):
 ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD cn=dovecot,dc=jkristian,dc=com
 ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -r ou=users,dc=jkristian,dc=com
+
+apt-get install -y dovecot-ldap
