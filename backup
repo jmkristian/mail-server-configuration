@@ -8,9 +8,11 @@ mkdir -p\
       "$INTO"/etc/dovecot\
       "$INTO"/etc/getmail\
       "$INTO"/etc/ldap\
+      "$INTO"/etc/ldapcherry\
       "$INTO"/etc/postfix\
       "$INTO"/etc/roundcube\
       "$INTO"/etc/systemd/system\
+      "$INTO"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry\
       "$INTO"/usr/share/ldapcherry\
       "$INTO"/usr/share/roundcube\
       "$INTO"/var/www/html
@@ -20,12 +22,15 @@ cp -pr "$FROM"/etc/apache2/sites-enabled "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/dovecot/*   "$INTO"/etc/dovecot/
 cp -pr "$FROM"/etc/getmail/*   "$INTO"/etc/getmail/
 cp -pr "$FROM"/etc/ldap/*      "$INTO"/etc/ldap/
+cp -pr "$FROM"/etc/ldapcherry/* "$INTO"/etc/ldapcherry/
 cp -pr "$FROM"/etc/postfix/*   "$INTO"/etc/postfix/
 cp -pr "$FROM"/etc/roundcube/* "$INTO"/etc/roundcube/
-cp -pr "$FROM"/usr/share/ldapcherry/* "$INTO"/usr/share/ldapcherry
-cp -pr "$FROM"/usr/share/roundcube/* "$INTO"/usr/share/roundcube
 cp -pr "$FROM"/etc/systemd/system/getmail.service "$INTO"/etc/systemd/system/
 cp -pr "$FROM"/etc/systemd/system/ldapcherry.service "$INTO"/etc/systemd/system/
+cp -pr "$FROM"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry/*\
+       "$INTO"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry
+cp -pr "$FROM"/usr/share/ldapcherry/* "$INTO"/usr/share/ldapcherry
+cp -pr "$FROM"/usr/share/roundcube/* "$INTO"/usr/share/roundcube
 cp -pr "$FROM"/var/www/html/*   "$INTO"/var/www/html/
 
 rm -f "$INTO"/etc/dovecot/dovecot-users
@@ -38,5 +43,7 @@ rm -f "$INTO"/etc/postfix/post-install
 rm -f "$INTO"/etc/postfix/postfix-files
 rm -f "$INTO"/etc/postfix/postfix-script
 rm -f "$INTO"/etc/postfix/sasl_passwd
+find "$INTO"/usr/local/lib/python3.8/dist-packages -type d -name '__pycache__'\
+    | xargs -d '\n' rm -rf
 find "$INTO"/usr/share/roundcube -type f \( -name '*.gif' -o -name '*.png' -o -name '*.svg' \) \
     | xargs -d '\n' rm -f

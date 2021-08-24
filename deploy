@@ -2,7 +2,7 @@
 # Copy all configuration files from this repository to $INTO.
 INTO="$1"
 cd `dirname "$0"` || exit $?
-for FILE in `find etc var -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'`; do
+for FILE in `find etc usr var -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'`; do
     diff > /dev/null 2>&1 "$FILE" "$INTO"/"$FILE" || {
 	echo cp -p "$FILE" "$INTO"/"$FILE"
 	cp -p "$FILE" "$INTO"/"$FILE"

@@ -65,3 +65,18 @@ ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -r ou=users,dc=jkri
 # Configure Dovecot to use LDAP for authenticating users:
 apt-get install -y dovecot-ldap
 ./deploy
+
+# Setup LdapCherry:
+apt-get install -y python3-pip
+pip install cherrypy
+# To test:
+python3 -m cherrypy.tutorial.tut01_helloworld
+curl http://127.0.0.1:8080
+# Kill the server
+apt-get install -y libldap2-dev libsasl2-dev
+pip install python-ldap
+# Download ldapcherry-1.1.1.tar.gz from https://github.com/kakwa/ldapcherry/releases
+# curl doesn't work. Maybe the links redirect.
+tar -xzof ldapcherry-*.tar.gz
+cd ldapcherry-1.1.1
+python3 setup.py install
