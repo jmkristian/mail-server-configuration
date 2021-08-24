@@ -1,0 +1,11 @@
+[Unit]
+Description=Enable editing users
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ldapcherryd -c /etc/ldapcherry/ldapcherry.ini
+
+[Install]
+Alias=ldapcherry
+WantedBy=multi-user.target
