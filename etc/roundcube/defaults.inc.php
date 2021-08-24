@@ -568,7 +568,7 @@ $config['username_domain_forced'] = false;
 // %d - domain (http hostname without the first part)
 // %z - IMAP domain (IMAP hostname without the first part)
 // For example %n = mail.domain.tld, %t = domain.tld
-$config['mail_domain'] = '';
+$config['mail_domain'] = 'jkristian.com';
 
 // Password character set, to change the password for user
 // authentication or for password change operations
