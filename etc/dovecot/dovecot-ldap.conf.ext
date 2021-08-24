@@ -131,7 +131,7 @@ pass_attrs = mail=user,userPassword=password
 #  ,homeDirectory=userdb_home,uidNumber=userdb_uid,gidNumber=userdb_gid
 
 # Filter for password lookups
-pass_filter = (mail=%u)
+pass_filter = (uid=%n)
 
 # Attributes and filter to get a list of all users
 #iterate_attrs = uid=user

@@ -48,7 +48,7 @@ email:
 #        ad: mail
 uid:
     description: "Login name of the user"
-    display_name: "User Name"
+    display_name: "Call Sign"
     search_displayed: True
     key: True
     type: string

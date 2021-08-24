@@ -18,7 +18,7 @@ $labels = array();
 
 // login page
 $labels['welcome'] = 'Welcome to $product';
-$labels['username'] = 'Username';
+$labels['username'] = 'Call Sign';
 $labels['password'] = 'Password';
 $labels['server'] = 'Server';
 $labels['login'] = 'Login';
