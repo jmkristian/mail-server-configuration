@@ -14,11 +14,11 @@
                 % endif
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <a class="navbar-brand navbar-right" href='/logout'><span class="glyphicon glyphicon-off"></span> Logout</a>
+                    <a class="navbar-brand navbar-right" href="/logout"><span class="glyphicon glyphicon-off"></span> Logout</a>
                             % if is_admin:
-		            <form method='GET' action='/searchadmin' class="navbar-form navbar-right" role="search" data-toggle="validator">
+		            <form method="GET" action="searchadmin" class="navbar-form navbar-right" role="search" data-toggle="validator">
                             % else:
-		            <form method='GET' action='/searchuser' class="navbar-form navbar-right" role="search" data-toggle="validator">
+		            <form method="GET" action="searchuser" class="navbar-form navbar-right" role="search" data-toggle="validator">
                             % endif
                         <div class="form-group">
                             % if is_admin:

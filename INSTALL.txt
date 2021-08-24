@@ -80,3 +80,8 @@ pip install python-ldap
 tar -xzof ldapcherry-*.tar.gz
 cd ldapcherry-1.1.1
 python3 setup.py install
+a2enmod proxy
+a2enmod proxy_http
+a2enmod substitute
+./deploy
+service apache2 restart

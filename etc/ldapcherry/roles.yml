@@ -3,10 +3,10 @@ admin-lv3:
     description: Super administrators of the system
     backends_groups:
         ldap:
-            - cn=dns admins,ou=Group,dc=example,dc=org
-            - cn=nagios admins,ou=Group,dc=example,dc=org
-            - cn=puppet admins,ou=Group,dc=example,dc=org
-            - cn=users,ou=Group,dc=example,dc=org
+            - cn=dns admins,ou=groups,dc=jkristian,dc=com
+            - cn=nagios admins,ou=groups,dc=jkristian,dc=com
+            - cn=puppet admins,ou=groups,dc=jkristian,dc=com
+            - cn=users,ou=groups,dc=jkristian,dc=com
 #        ad:
 #            - Administrators
 #            - Group Policy Creator Owners
@@ -20,22 +20,22 @@ admin-lv2:
     LC_admins: True
     backends_groups:
         ldap:
-            - cn=nagios admins,ou=Group,dc=example,dc=org
-            - cn=users,ou=Group,dc=example,dc=org
+            - cn=nagios admins,ou=groups,dc=jkristian,dc=com
+            - cn=users,ou=groups,dc=jkristian,dc=com
 #        ad:
 #            - Administrators
 
 developpers:
-    display_name: Developpers
-    description: Developpers of the system
+    display_name: Developers
+    description: Developers of the system
     backends_groups:
         ldap:
-            - cn=developpers,ou=Group,dc=example,dc=org
-            - cn=users,ou=Group,dc=example,dc=org
+            - cn=developpers,ou=groups,dc=jkristian,dc=com
+            - cn=users,ou=groups,dc=jkristian,dc=com
 
 users:
     display_name: Simple Users
     description: Basic users of the system
     backends_groups:
         ldap:
-            - cn=users,ou=Group,dc=example,dc=org
+            - cn=users,ou=groups,dc=jkristian,dc=com

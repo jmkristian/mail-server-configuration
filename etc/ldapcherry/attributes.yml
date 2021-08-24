@@ -1,8 +1,10 @@
 cn:
     description: "First Name and Display Name"
-    display_name: "Display Name"
+    display_name: "Full Name"
+    search_displayed: True
     type: string
-    weight: 30
+    weight: 9
+    self: True
     autofill: 
         function: lcDisplayName
         args:
@@ -12,7 +14,7 @@ cn:
         ldap: cn
 #        ad: cn
 first-name:
-    description: "First name of the user"
+    description: "Given name of the user"
     display_name: "First Name"
     search_displayed: True
     type: string
@@ -22,19 +24,19 @@ first-name:
 #        ad: givenName
 name:
     description: "Family name of the user"
-    display_name: "Name"
-    search_displayed: True
+    display_name: "Last Name"
     weight: 10
     type: string
     backends:
         ldap: sn
 #        ad: sn
 email:
-    description: "Email of the user"
+    description: "Email address of the user"
     display_name: "Email"
     search_displayed: True
     type: email
     weight: 40
+    self: True
     autofill: 
         function: lcMail
         args:
@@ -45,12 +47,12 @@ email:
         ldap: mail
 #        ad: mail
 uid:
-    description: "UID of the user"
-    display_name: "UID"
+    description: "Login name of the user"
+    display_name: "User Name"
     search_displayed: True
     key: True
     type: string
-    weight: 50
+    weight: 5
     autofill: 
         function: lcUid
         args:
@@ -63,7 +65,7 @@ uid:
 #        ad: sAMAccountName
 uidNumber:
     description: "User ID Number of the user"
-    display_name: "UID Number"
+    display_name: "User ID"
     weight: 60
     type: int
     autofill: 
@@ -78,7 +80,7 @@ uidNumber:
 #        ad: uidNumber
 gidNumber:
     description: "Group ID Number of the user"
-    display_name: "GID Number"
+    display_name: "Group ID"
     weight: 70
     type: int
     default: '10000'
@@ -89,7 +91,6 @@ shell:
     description: "Shell of the user"
     display_name: "Shell"
     weight: 80
-    self: True
     type: stringlist
     values:
         - /bin/bash
@@ -99,7 +100,7 @@ shell:
         ldap: loginShell
 #        ad: loginShell 
 home:
-    description: "Home user path"
+    description: "Home directory of the user"
     display_name: "Home"
     weight: 90
     type: string
