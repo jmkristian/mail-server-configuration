@@ -7,6 +7,7 @@
 # Copyright (c) 2014 Carpentier Pierre-Francois
 
 # Generic imports
+import os
 import sys
 import re
 import traceback
@@ -387,7 +388,7 @@ class LdapCherry(object):
         self.temp = {}
         for t in ('index.tmpl', 'error.tmpl', 'login.tmpl', '404.tmpl',
                   'searchadmin.tmpl', 'searchuser.tmpl', 'adduser.tmpl',
-                  'roles.tmpl', 'groups.tmpl', 'form.tmpl', 'selfmodify.tmpl',
+                  'roles.tmpl', 'groups.tmpl', 'form.tmpl', 'selfadd.tmpl', 'selfmodify.tmpl',
                   'modify.tmpl', 'service_unavailable.tmpl'
                   ):
             self.temp[t] = self.temp_lookup.get_template(t)
@@ -878,6 +879,44 @@ class LdapCherry(object):
 
     def _checkppolicy(self, password):
         return self.ppolicy.check(password)
+
+    @cherrypy.expose
+    @exception_decorator
+    def selfadd(self, problem=None):
+        cherrypy.log.error(
+            severity=logging.DEBUG,
+            msg="selfadd"
+        )
+        return self.temp['selfadd.tmpl'].render(problem=problem)
+
+    @cherrypy.expose
+    @exception_decorator
+    def self_add(self, login, password1, password2, fullName):
+        """create a new user
+        """
+        if password1 != password2:
+            raise cherrypy.HTTPRedirect(
+                'selfadd?problem=' + quote_plus("Passwords don't match")
+            )
+        attributes = {
+            'uid': login,
+            'userPassword': password1,
+            'mail': login + '@jkristian.com',
+            'cn': fullName if (fullName != '') else '-',
+            'sn': '-',
+        }
+        cherrypy.log.error(
+            severity=logging.DEBUG,
+            msg="self_add(%(attrs)s)" % {'attrs': attributes}
+        )
+        try:
+            for b in self.backends:
+                self.backends[b].add_user(attributes)
+        except UserAlreadyExists as e:
+            raise cherrypy.HTTPRedirect(
+                'selfadd?problem=' + quote_plus('User "' + login + '" already has an account')
+            )
+        return self.login(login, password1)
 
     @cherrypy.expose
     @exception_decorator

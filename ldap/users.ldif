@@ -5,10 +5,6 @@ cn: dovecot
 description: Dovecot Message Delivery Agent
 userPassword: pZD9uu4y9wUBdLQf
 
-dn: ou=groups,dc=jkristian,dc=com
-objectClass: organizationalUnit
-ou: users
-
 dn: ou=users,dc=jkristian,dc=com
 objectClass: organizationalUnit
 ou: users
@@ -60,3 +56,11 @@ cn: -
 sn: -
 userPassword: charlie
 mail: c@jkristian.com
+
+dn: ou=groups,dc=jkristian,dc=com
+objectClass: organizationalUnit
+ou: users
+
+dn: cn=user admins,ou=groups,dc=jkristian,dc=com
+objectClass: groupOfNames
+member: uid=w6jmk,ou=users,dc=jkristian,dc=com

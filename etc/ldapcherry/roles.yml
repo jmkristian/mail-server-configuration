@@ -20,8 +20,7 @@ admin-lv2:
     LC_admins: True
     backends_groups:
         ldap:
-            - cn=nagios admins,ou=groups,dc=jkristian,dc=com
-            - cn=users,ou=groups,dc=jkristian,dc=com
+            - cn=user admins,ou=groups,dc=jkristian,dc=com
 #        ad:
 #            - Administrators
 
@@ -30,7 +29,7 @@ developpers:
     description: Developers of the system
     backends_groups:
         ldap:
-            - cn=developpers,ou=groups,dc=jkristian,dc=com
+            - cn=developers,ou=groups,dc=jkristian,dc=com
             - cn=users,ou=groups,dc=jkristian,dc=com
 
 users:
