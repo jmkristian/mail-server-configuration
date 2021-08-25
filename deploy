@@ -1,13 +1,20 @@
 #!/bin/sh
 # Copy all configuration files from this repository to $INTO.
-INTO="${1:-/}"
+INTO="$1"
 cd `dirname "$0"` || exit $?
-for FILE in `find etc var -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'`; do
-    diff > /dev/null 2>&1 "$FILE" "$INTO$FILE" || {
-	echo cp -p "$FILE" "$INTO$FILE"
-	cp -p "$FILE" "$INTO$FILE"
+for FILE in `find etc usr var -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'`; do
+    diff > /dev/null 2>&1 "$FILE" "$INTO"/"$FILE" || {
+        INTO_DIRECTORY=`dirname "$INTO"/"$FILE"`
+        if [ -d  "$INTO_DIRECTORY" ]; then
+            echo cp -p "$FILE" "$INTO"/"$FILE"
+            cp -p "$FILE" "$INTO"/"$FILE"
+        elif [ -e "$INTO_DIRECTORY" ]; then
+            echo 1>&2 "not a directory: $INTO_DIRECTORY"
+        fi
     }
 done
-postmap "$INTO"etc/postfix/virtual_mailbox_domains
-postmap "$INTO"etc/postfix/valias
-postmap "$INTO"etc/postfix/vmailbox
+postmap "$INTO"/etc/postfix/sasl_passwd
+postmap "$INTO"/etc/postfix/transport
+postmap "$INTO"/etc/postfix/valias
+postmap "$INTO"/etc/postfix/virtual_mailbox_domains
+postmap "$INTO"/etc/postfix/vmailbox
