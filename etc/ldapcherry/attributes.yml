@@ -3,7 +3,7 @@ cn:
     display_name: "Full Name"
     search_displayed: True
     type: string
-    weight: 9
+    weight: 60
     self: True
     autofill: 
         function: lcDisplayName
@@ -18,14 +18,14 @@ first-name:
     display_name: "First Name"
     search_displayed: True
     type: string
-    weight: 20
+    weight: 40
     backends:
         ldap: givenName
 #        ad: givenName
 name:
     description: "Family name of the user"
     display_name: "Last Name"
-    weight: 10
+    weight: 50
     type: string
     backends:
         ldap: sn
@@ -35,14 +35,13 @@ email:
     display_name: "Email"
     search_displayed: True
     type: email
-    weight: 40
+    weight: 20
     self: True
     autofill: 
-        function: lcMail
+        function: lcConcatenate
         args:
-            - $first-name
-            - $name
-            - '@example.com'
+            - $uid
+            - '@jkristian.com'
     backends:
         ldap: mail
 #        ad: mail
@@ -52,7 +51,7 @@ uid:
     search_displayed: True
     key: True
     type: string
-    weight: 5
+    weight: 10
     autofill: 
         function: lcUid
         args:
@@ -63,60 +62,60 @@ uid:
     backends:
         ldap: uid
 #        ad: sAMAccountName
-uidNumber:
-    description: "User ID Number of the user"
-    display_name: "User ID"
-    weight: 60
-    type: int
-    autofill: 
-        function: lcUidNumber
-        args:
-            - $first-name
-            - $name
-            - '10000'
-            - '40000'
-    backends:
-        ldap: uidNumber
+#uidNumber:
+#    description: "User ID Number of the user"
+#    display_name: "User ID"
+#    weight: 60
+#    type: int
+#    autofill: 
+#        function: lcUidNumber
+#        args:
+#            - $first-name
+#            - $name
+#            - '10000'
+#            - '40000'
+#    backends:
+#        ldap: uidNumber
 #        ad: uidNumber
-gidNumber:
-    description: "Group ID Number of the user"
-    display_name: "Group ID"
-    weight: 70
-    type: int
-    default: '10000'
-    backends:
-        ldap: gidNumber
+#gidNumber:
+#    description: "Group ID Number of the user"
+#    display_name: "Group ID"
+#    weight: 70
+#    type: int
+#    default: '10000'
+#    backends:
+#        ldap: gidNumber
 #        ad: gidNumber
-shell:
-    description: "Shell of the user"
-    display_name: "Shell"
-    weight: 80
-    type: stringlist
-    values:
-        - /bin/bash
-        - /bin/zsh
-        - /bin/sh
-    backends:
-        ldap: loginShell
+#shell:
+#    description: "Shell of the user"
+#    display_name: "Shell"
+#    weight: 80
+#    type: stringlist
+#    values:
+#        - /bin/bash
+#        - /bin/zsh
+#        - /bin/sh
+#    backends:
+#        ldap: loginShell
 #        ad: loginShell 
-home:
-    description: "Home directory of the user"
-    display_name: "Home"
-    weight: 90
-    type: string
-    autofill: 
-        function: lcHomeDir
-        args:
-            - $first-name
-            - $name
-            - /home/
-    backends:
-        ldap: homeDirectory
+#home:
+#    description: "Home directory of the user"
+#    display_name: "Home"
+#    weight: 90
+#    type: string
+#    autofill: 
+#        function: lcHomeDir
+#        args:
+#            - $first-name
+#            - $name
+#            - /home/
+#    backends:
+#        ldap: homeDirectory
 #        ad: homeDirectory
 password:
     description: "Password of the user"
     display_name: "Password"
-    weight: 31
+    weight: 30
     self: True
     type: password
     backends:

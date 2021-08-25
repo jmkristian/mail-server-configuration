@@ -1,0 +1,49 @@
+## -*- coding: utf-8 -*-
+<%inherit file="base.tmpl"/>
+<%block name="core">
+    <div class="row clearfix" style="margin-top:30px">
+        <div class="col-md-4 column"></div>
+        <div class="col-md-4 column well">
+            <form method="POST" action="self_add" role="form" class="form-signin">
+              <div class="form-group">
+                <h3 class="form-signin-heading">Create your account</h3>
+% if problem:
+                <div class="help-block has-error" style="color:red;">${problem}</div>
+% endif
+                <div class="input-group">
+                    <span class="input-group-addon">Call Sign</span>
+                    <input type="text" class="form-control" name="login" autocomplete="off" required autofocus/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon-password">Password</span>
+                  <input type="password" class="form-control" data-ppolicy="ppolicy"
+                         name="password1" id="password1" autocomplete="off"
+                         readonly onfocus="this.removeAttribute('readonly');"/>
+                  <span class="input-group-addon" id="basic-addon-password2">Retype Password</span>
+                  <input type="password" class="form-control"
+                         data-match="#password1" data-match-error="Passwords don't match"
+                         name="password2" id="password2" autocomplete="off"
+                         readonly onfocus="this.removeAttribute('readonly');"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Full Name</span>
+                    <input type="text" class="form-control" name="fullName" autocomplete="off"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <button class="btn btn-default green" type="submit">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    Create 
+                  </button>
+                </div>
+              </div>
+            </form>
+        </div>
+        <div class="col-md-4 column"></div>
+    </div>
+</%block>
