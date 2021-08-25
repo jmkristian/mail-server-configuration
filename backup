@@ -15,14 +15,16 @@ mkdir -p\
 cp -pr "$FROM"/etc/apache2/sites-available "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/apache2/sites-enabled "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/dovecot/*   "$INTO"/etc/dovecot/
-cp -pr "$FROM"/etc/postfix/*   "$INTO"/etc/postfix/
 cp -pr "$FROM"/etc/ldap/*      "$INTO"/etc/ldap/
+cp -pr "$FROM"/etc/postfix/*   "$INTO"/etc/postfix/
 cp -pr "$FROM"/etc/roundcube/* "$INTO"/etc/roundcube/
 cp -pr "$FROM"/usr/share/roundcube/* "$INTO"/usr/share/roundcube
 cp -pr "$FROM"/var/www/html/*   "$INTO"/var/www/html/
 
 rm -f "$INTO"/etc/dovecot/dovecot-users
 rm -f "$INTO"/etc/dovecot/users
+rm -rf "$INTO"/etc/ldap/slapd.d/cn=config
+rm -f "$INTO"/etc/ldap/slapd.d/cn=config.ldif
 rm -f "$INTO"/etc/postfix/post-install
 rm -f "$INTO"/etc/postfix/postfix-files
 rm -f "$INTO"/etc/postfix/postfix-script
