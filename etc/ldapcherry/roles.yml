@@ -1,12 +1,12 @@
-admin-lv3:
-    display_name: Administrators Level 3
-    description: Super administrators of the system
-    backends_groups:
-        ldap:
-            - cn=dns admins,ou=groups,dc=jkristian,dc=com
-            - cn=nagios admins,ou=groups,dc=jkristian,dc=com
-            - cn=puppet admins,ou=groups,dc=jkristian,dc=com
-            - cn=users,ou=groups,dc=jkristian,dc=com
+#admin-lv3:
+#    display_name: Administrators Level 3
+#    description: Super administrators of the system
+#    backends_groups:
+#        ldap:
+#            - cn=dns admins,ou=groups,dc=jkristian,dc=com
+#            - cn=nagios admins,ou=groups,dc=jkristian,dc=com
+#            - cn=puppet admins,ou=groups,dc=jkristian,dc=com
+#            - cn=users,ou=groups,dc=jkristian,dc=com
 #        ad:
 #            - Administrators
 #            - Group Policy Creator Owners
@@ -14,9 +14,9 @@ admin-lv3:
 #            - Schema Admins
 #            - Domain Admins
 
-admin-lv2:
-    display_name: Administrators Level 2
-    description: Basic administrators of the system
+user-admins:
+    display_name: Administrators
+    description: Can add, delete or modify any user
     LC_admins: True
     backends_groups:
         ldap:
@@ -24,17 +24,17 @@ admin-lv2:
 #        ad:
 #            - Administrators
 
-developpers:
-    display_name: Developers
-    description: Developers of the system
-    backends_groups:
-        ldap:
-            - cn=developers,ou=groups,dc=jkristian,dc=com
-            - cn=users,ou=groups,dc=jkristian,dc=com
-
-users:
-    display_name: Simple Users
-    description: Basic users of the system
-    backends_groups:
-        ldap:
-            - cn=users,ou=groups,dc=jkristian,dc=com
+#developpers:
+#    display_name: Developers
+#    description: Developers of the system
+#    backends_groups:
+#        ldap:
+#            - cn=developers,ou=groups,dc=jkristian,dc=com
+#            - cn=users,ou=groups,dc=jkristian,dc=com
+#
+#users:
+#    display_name: Simple Users
+#    description: Basic users of the system
+#    backends_groups:
+#        ldap:
+#            - cn=users,ou=groups,dc=jkristian,dc=com

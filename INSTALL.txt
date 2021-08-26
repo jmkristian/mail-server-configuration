@@ -48,23 +48,31 @@ service getmail start
 systemctl enable getmail
 
 apt-get install -y slapd ldap-utils
+# password = an unguessable password
+echo -n ${that password} > /etc/ldap/admin-password.txt
+echo -n ${a different unguessable password} > /etc/dovecot/ldap-password.txt
+chmod o-rwx /etc/ldap/admin-password.txt
+chmod o-rwx /etc/dovecot/ldap-password.txt
 dpkg-reconfigure slapd
-# domain = jkristian.com
-PASSWORD=whatever you entered into dpkg-reconfigure
+# base domain = jkristian.com
 # Enable Dovecot to search by mail and read passwords:
 ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f ldap/access.ldif
 # Add Dovecot and some users to the LDAP directory:
-ldapadd -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -f ldap/users.ldif
+./expand ldap/users.ldif | ldapadd -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt
 # Check the results:
-ldapsearch -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -LLL -b "dc=jkristian,dc=com"
-ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -w pZD9uu4y9wUBdLQf -LLL -b "dc=jkristian,dc=com" userPassword
+ldapsearch -Q -Y EXTERNAL -H ldapi:/// -LLL -b "olcDatabase={1}mdb,cn=config"
+ldapsearch -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt\
+    -LLL -b "dc=jkristian,dc=com"
+ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -y /etc/dovecot/ldap-password.txt\
+    -LLL -b "dc=jkristian,dc=com" userPassword
 # To delete all the data (if needed):
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD cn=dovecot,dc=jkristian,dc=com
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -w $PASSWORD -r ou=users,dc=jkristian,dc=com
+ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=groups,dc=jkristian,dc=com
+ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=people,dc=jkristian,dc=com
+ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt cn=dovecot,dc=jkristian,dc=com
 
 # Configure Dovecot to use LDAP for authenticating users:
+service dovecot stop
 apt-get install -y dovecot-ldap
-./deploy
 
 # Setup LdapCherry:
 apt-get install -y python3-pip
@@ -83,7 +91,10 @@ python3 setup.py install
 a2enmod proxy
 a2enmod proxy_http
 a2enmod substitute
+cd ..
 ./deploy
 systemctl enable ldapcherry
+service slapd restart
+service dovecot restart
 service ldapcherry restart
 service apache2 restart

@@ -1,0 +1,17 @@
+#!/bin/sh
+Dovecot_password=`cat /etc/dovecot/ldap-password.txt`
+LdapCherry_password=`cat /etc/ldap/admin-password.txt`
+CLIENTS="Dovecot LdapCherry"
+COMMAND=sed
+for CLIENT in $CLIENTS; do
+    PASSWORD=`eval 'echo $'"$CLIENT"_password`
+    if echo -n "$PASSWORD" | fgrep ' ' > /dev/null; then
+        echo >&2 "$CLIENT"_password must not contain a space.
+        PASSWORD=TBD
+    fi
+    COMMAND="$COMMAND -e 's {$CLIENT"_password"} $PASSWORD g'"
+    # The s expressions are punctuated with space,
+    # so the passwords may contain anything but space.
+done
+COMMAND="$COMMAND "'"$@"'
+eval "$COMMAND" || exit $?

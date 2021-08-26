@@ -28,12 +28,18 @@ cp -pr "$FROM"/etc/systemd/system/getmail.service "$INTO"/etc/systemd/system/
 cp -pr "$FROM"/etc/systemd/system/ldapcherry.service "$INTO"/etc/systemd/system/
 cp -pr "$FROM"/var/www/html/*   "$INTO"/var/www/html/
 
+# Don't backup files that contain sensitive information, e.g. passwords.
+# Don't backup files that should not be deployed.
 rm -f "$INTO"/etc/dovecot/dovecot-users
+rm -f "$INTO"/etc/dovecot/dovecot-ldap.conf.ext
+rm -f "$INTO"/etc/dovecot/ldap-password.txt
 rm -f "$INTO"/etc/dovecot/users
 rm -f "$INTO"/etc/getmail/*.password
 rm -f "$INTO"/etc/getmail/oldmail-*
+rm -f "$INTO"/etc/ldap/admin-password.txt
 rm -rf "$INTO"/etc/ldap/slapd.d/cn=config
 rm -f "$INTO"/etc/ldap/slapd.d/cn=config.ldif
+rm -f "$INTO"/etc/ldapcherry/ldapcherry.ini
 rm -f "$INTO"/etc/postfix/post-install
 rm -f "$INTO"/etc/postfix/postfix-files
 rm -f "$INTO"/etc/postfix/postfix-script

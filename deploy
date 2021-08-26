@@ -13,6 +13,15 @@ for FILE in `find etc var -type f | grep -v '~$' | grep -v '^etc/postfix/.*\.db'
         fi
     }
 done
+# Insert private information into templates:
+for TEMPLATE in\
+    "$INTO"/etc/dovecot/*.template\
+    "$INTO"/etc/ldapcherry/*.template\
+; do
+    TARGET=`echo "$TEMPLATE" | sed -e 's/\.template$//'`
+    ./expand "$TEMPLATE" > "$TARGET"
+    chmod o-rwx "$TARGET" # Since it contains private information.
+done
 postmap "$INTO"/etc/postfix/sasl_passwd
 postmap "$INTO"/etc/postfix/transport
 postmap "$INTO"/etc/postfix/virtual_mailbox_domains
