@@ -98,7 +98,7 @@ ldap.checkcert = 'off'
 # bind dn to the ldap
 ldap.binddn = 'cn=admin,dc=jkristian,dc=com'
 # password of the bind dn
-ldap.password = '{LdapCherry password}'
+ldap.password = '{LdapCherry_password}'
 # timeout of ldap connexion (in second)
 ldap.timeout = 1
 

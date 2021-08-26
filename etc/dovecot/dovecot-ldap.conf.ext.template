@@ -28,7 +28,7 @@ uris = ldap:///
 dn = cn=dovecot,dc=jkristian,dc=com
 
 # Password for LDAP server, if dn is specified.
-dnpass = {Dovecot password}
+dnpass = {Dovecot_password}
 
 # Use SASL binding instead of the simple binding. Note that this changes
 # ldap_version automatically to be 3 if it's lower.
