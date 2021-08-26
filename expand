@@ -1,0 +1,5 @@
+#!/bin/sh
+exec sed\
+    -e s/'{LdapCherry password}'/`cat /etc/ldap/admin-password.txt`/g\
+    -e s/'{Dovecot password}'/`cat /etc/dovecot/ldap-password.txt`/g\
+    "$@"

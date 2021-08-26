@@ -98,24 +98,24 @@ ldap.checkcert = 'off'
 # bind dn to the ldap
 ldap.binddn = 'cn=admin,dc=jkristian,dc=com'
 # password of the bind dn
-ldap.password = 's6EN6n3PR82Xa5XX'
+ldap.password = '{LdapCherry password}'
 # timeout of ldap connexion (in second)
 ldap.timeout = 1
 
 # groups dn
 ldap.groupdn = 'ou=groups,dc=jkristian,dc=com'
 # users dn
-ldap.userdn = 'ou=users,dc=jkristian,dc=com'
+ldap.userdn = 'ou=people,dc=jkristian,dc=com'
 
 # ldapsearch filter to get a specific user
 # %(username)s is content of the attribute marked 'key: True' in the attributes.file conf
 ldap.user_filter_tmpl = '(uid=%(username)s)'
 # ldapsearch filter to get groups of a user
 # %(username)s is content of the attribute marked 'key: True' in the attributes.file conf
-ldap.group_filter_tmpl = '(member=uid=%(username)s,ou=users,dc=jkristian,dc=com)'
+ldap.group_filter_tmpl = '(member=uid=%(username)s,ou=people,dc=jkristian,dc=com)'
 # filter to search users
 # %(searchstring)s is content passed through the search box
-ldap.search_filter_tmpl = '(|(uid=%(searchstring)s*)(sn=%(searchstring)s*))'
+ldap.search_filter_tmpl = '(|(uid=%(searchstring)s*)(cn=*%(searchstring)s*))'
 
 # ldap group attributes and how to fill them
 # 'member' is the name of the attribute

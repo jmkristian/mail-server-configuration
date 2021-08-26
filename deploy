@@ -13,6 +13,13 @@ for FILE in `find etc usr var -type f | grep -v '~$' | grep -v '^etc/postfix/.*\
         fi
     }
 done
+for TEMPLATE in\
+    "$INTO"/etc/dovecot/*.template\
+    "$INTO"/etc/ldapcherry/*.template\
+; do
+    TARGET=`echo "$TEMPLATE" | sed -e 's/\.template$//'`
+    ./expand "$TEMPLATE" > "$TARGET"
+done
 postmap "$INTO"/etc/postfix/sasl_passwd
 postmap "$INTO"/etc/postfix/transport
 postmap "$INTO"/etc/postfix/virtual_mailbox_domains
