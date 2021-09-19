@@ -1,6 +1,10 @@
 Here's how the packages were installed, as recommended by:
 https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubuntu-20-04
 
+# Edit /etc/systemd/journald.conf to contain:
+MaxFileSec=1day
+MaxRetentionSec=2week
+
 apt-get install -y postfix
 # select "Internet Site"
 # mail domain name: jkristian.com
