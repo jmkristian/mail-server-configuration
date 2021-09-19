@@ -4,6 +4,10 @@ https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubunt
 # Configure the DNS server for jkristian.com to publish the MTA's address:
 mta1.jkristian.com IN A <IP address>
 
+# Edit /etc/systemd/journald.conf to contain:
+MaxFileSec=1day
+MaxRetentionSec=2week
+
 # Configure the firewall:
 POSTOFFICE=24.6.134.5
 ufw allow ssh comment "ssh"
