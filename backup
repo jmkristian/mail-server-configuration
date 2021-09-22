@@ -9,6 +9,7 @@ mkdir -p\
       "$INTO"/etc/getmail\
       "$INTO"/etc/ldap\
       "$INTO"/etc/ldapcherry\
+      "$INTO"/etc/logrotate.d\
       "$INTO"/etc/postfix\
       "$INTO"/etc/roundcube\
       "$INTO"/etc/systemd/system\
@@ -23,6 +24,7 @@ cp -pr "$FROM"/etc/dovecot/*   "$INTO"/etc/dovecot/
 cp -pr "$FROM"/etc/getmail/*   "$INTO"/etc/getmail/
 cp -pr "$FROM"/etc/ldap/*      "$INTO"/etc/ldap/
 cp -pr "$FROM"/etc/ldapcherry/* "$INTO"/etc/ldapcherry/
+cp -p  "$FROM"/etc/logrotate.d/getmail "$INTO"/etc/logrotate.d/
 cp -pr "$FROM"/etc/postfix/*   "$INTO"/etc/postfix/
 cp -pr "$FROM"/etc/roundcube/* "$INTO"/etc/roundcube/
 cp -pr "$FROM"/etc/systemd/system/getmail.service "$INTO"/etc/systemd/system/
