@@ -1,0 +1,9 @@
+/var/log/getmail.log
+{
+	rotate 7
+	daily
+        copytruncate
+	missingok
+	notifempty
+        dateext
+}
