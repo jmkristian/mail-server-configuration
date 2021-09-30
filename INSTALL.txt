@@ -31,6 +31,11 @@ quit
 service postfix stop; service dovecot stop
 
 apt-get install -y apache2
+a2enmod proxy
+a2enmod proxy_http
+a2enmod substitute
+a2enmod rewrite
+service apache2 restart
 # Test: browse http://`hostname`
 
 apt-get install -y php
@@ -42,7 +47,6 @@ apt-get install -y roundcube
 # Select 'Yes' configure database with dbconfig-common.
 # Enter password = PASSWORD
 # Deploy the new configuration files (./deploy).
-service apache2 restart
 # Test: browse http://`hostname`/info.php
 # Test: browse http://`hostname`/email
 
@@ -92,9 +96,6 @@ pip install python-ldap
 tar -xzof ldapcherry-*.tar.gz
 cd ldapcherry-1.1.1
 python3 setup.py install
-a2enmod proxy
-a2enmod proxy_http
-a2enmod substitute
 cd ..
 ./deploy
 systemctl enable ldapcherry
@@ -102,3 +103,36 @@ service slapd restart
 service dovecot restart
 service ldapcherry restart
 service apache2 restart
+
+# FTP and WebDAV served by SFTPGo:
+# SFTPGo serves a web-based UI on port 2080, FTP on port 21 and WebDAV on port 2021.
+# To enable a Windows client to access WebDAV, use regedit to set this registry key = 2:
+# HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WebClient\Parameters\BasicAuthLevel
+# The default value is 1, which means it won't send a cleartext password via HTTP.
+mkdir -p /etc/sftpgo
+mkdir -p /var/www/webdav/public
+cd /usr/share
+git clone git@github.com:drakkan/sftpgo.git # https://github.com/drakkan/sftpgo
+cd sftpgo
+sudo snap install go --classic --channel=1.17/stable # https://snapcraft.io/go
+go build -o /etc/sftpgo/sftpgo\
+  -tags "nogcs nos3 noazblob nobolt nomysql nopgsql novaultkms noawskms nogcpkms"\
+  -ldflags "-s -w -X github.com/drakkan/sftpgo/v2/version.commit=`git describe --always --dirty` -X github.com/drakkan/sftpgo/v2/version.date=`date -u +%FT%TZ`"
+/etc/sftpgo/sftpgo -v
+ln -s /usr/share/sftpgo/static /usr/share/sftpgo/templates /etc/sftpgo/
+
+cd /usr/share/sftpgo/examples/ldapauth
+~/config/deploy # /usr/share/sftpgo/examples/ldapauth/main.go
+go build -o /etc/sftpgo/ldapauth -ldflags "-s -w"
+
+cd /etc/sftpgo
+./sftpgo initprovider
+./sftpgo serve
+# Browse http://localhost:2080/web/admin
+# Create user 'admin' with a strong password
+# Store that password into /etc/sftpgo/admin-password.txt, with no line feed
+~/config/deploy # ldap/users.ldif
+
+service sftpgo start
+service sftpgo status
+systemctl enable sftpgo

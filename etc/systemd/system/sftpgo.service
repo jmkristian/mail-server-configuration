@@ -1,0 +1,14 @@
+[Unit]
+Description=SFTPGo File Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/etc/sftpgo
+ExecStart=/etc/sftpgo/sftpgo serve
+ExecReload=/bin/kill -s HUP $MAINPID
+LimitNOFILE=8192
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

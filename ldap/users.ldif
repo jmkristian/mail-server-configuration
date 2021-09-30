@@ -3,7 +3,14 @@ objectClass: organizationalRole
 objectClass: simpleSecurityObject
 cn: dovecot
 description: Dovecot Message Delivery Agent
-userPassword: {Dovecot password}
+userPassword: {Dovecot_password}
+
+dn: cn=sftpgo,dc=jkristian,dc=com
+objectClass: organizationalRole
+objectClass: simpleSecurityObject
+cn: sftpgo
+description: SFTPGo WebDAV and SFTP server
+userPassword: {SFTPGo_password}
 
 dn: ou=people,dc=jkristian,dc=com
 objectClass: organizationalUnit

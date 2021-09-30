@@ -1,7 +1,8 @@
 #!/bin/sh
 Dovecot_password=`cat /etc/dovecot/ldap-password.txt`
 LdapCherry_password=`cat /etc/ldap/admin-password.txt`
-CLIENTS="Dovecot LdapCherry"
+SFTPGo_password=`cat /etc/sftpgo/admin-password.txt`
+CLIENTS="Dovecot LdapCherry SFTPGo"
 COMMAND=sed
 for CLIENT in $CLIENTS; do
     PASSWORD=`eval 'echo $'"$CLIENT"_password`
