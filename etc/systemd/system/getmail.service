@@ -1,6 +1,6 @@
 [Unit]
 Description=Fetch email from mta1.jkristian.com
-Wants=network.target
+After=network.target
 
 [Service]
 Type=simple

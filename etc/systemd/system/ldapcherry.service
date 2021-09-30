@@ -1,6 +1,6 @@
 [Unit]
 Description=Enable editing users
-Wants=network.target
+After=network.target
 
 [Service]
 Type=simple
