@@ -53,3 +53,4 @@ find "$INTO"/usr/local/lib/python3.8/dist-packages -type d -name '__pycache__'\
     | xargs -d '\n' rm -rf
 find "$INTO"/usr/share/roundcube -type f \( -name '*.gif' -o -name '*.png' -o -name '*.svg' \) \
     | xargs -d '\n' rm -f
+rm -rf "$INTO"/var/www/html/meshchat/db
