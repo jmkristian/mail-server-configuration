@@ -5,14 +5,14 @@
     This is a place to share files. Anyone can read any file.
   </p><p>
     You can browse files starting at the URL path <a href="/files/">http:/files/</a>.
-    You can upload and download files via FTP (port 21), WebDAV on HTTP port 2021
+    You can upload and download files via FTP (port 21), WebDAV on HTTP port 2121
     or the web UI at <a href="/edit-files">http:/edit-files</a> .
     You can log in with the username "anonymous" and any password.
     If you log in with any other username, you can modify files in the folder whose name is your username.
     To get a username, you can <a href="/user/selfadd">create an account</a>.
   </p><p>
     You can access WebDAV from Windows File Explorer by applying "Map Network Drive" to
-    a folder name like http://hostname:2021 .
+    a folder name like http://hostname:2121 .
     <em>But</em> this won't work until you use regedit to set this registry key = 2:
     <pre>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WebClient\Parameters\BasicAuthLevel</pre>
     The value 2 enables Windows to send a cleartext password via HTTP.

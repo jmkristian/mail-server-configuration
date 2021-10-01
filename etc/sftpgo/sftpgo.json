@@ -108,7 +108,7 @@
   "webdavd": {
     "bindings": [
       {
-        "port": 2021,
+        "port": 2121,
         "address": "",
         "enable_https": false,
         "client_auth_type": 0,
@@ -196,7 +196,7 @@
   "httpd": {
     "bindings": [
       {
-        "port": 2080,
+        "port": 2180,
         "address": "localhost",
         "enable_web_admin": true,
         "enable_web_client": true,
