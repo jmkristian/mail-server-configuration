@@ -105,7 +105,8 @@ service dovecot restart
 service ldapcherry restart
 service apache2 restart
 
-# Add swap space, to accomodate `go build`.
+# `go build` uses a lot of memory, so much that it can cause thrashing.
+# To avoid this, it helps to add swap space. Here's how, on Ubuntu 20:
 free -h
 # If it shows zero bytes of swap:
 fallocate -l 1G /swapfile
@@ -123,10 +124,6 @@ vm.vfs_cache_pressure=50 # Try to retain filesystem data in cache
 shutdown -r now
 
 # FTP and WebDAV served by SFTPGo:
-# SFTPGo serves a web-based UI on port 2080, FTP on port 21 and WebDAV on port 2021.
-# To enable a Windows client to access WebDAV, use regedit to set this registry key = 2:
-# HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WebClient\Parameters\BasicAuthLevel
-# The default value is 1, which means it won't send a cleartext password via HTTP.
 mkdir -p /etc/sftpgo
 mkdir -p /var/www/webdav/public
 cd /usr/share
@@ -138,10 +135,8 @@ go build -o /etc/sftpgo/sftpgo\
   -ldflags "-s -w -X github.com/drakkan/sftpgo/v2/version.commit=`git describe --always --dirty` -X github.com/drakkan/sftpgo/v2/version.date=`date -u +%FT%TZ`"
 /etc/sftpgo/sftpgo -v
 ln -s /usr/share/sftpgo/static /usr/share/sftpgo/templates /etc/sftpgo/
-cd /usr/share/sftpgo/examples/ldapauth
-go build -o /etc/sftpgo/ldapauth -ldflags "-s -w"
-cd /etc/sftpgo
-./sftpgo initprovider
+(cd /usr/share/sftpgo/examples/ldapauth && go build -o /etc/sftpgo/ldapauth -ldflags "-s -w")
+(cd /etc/sftpgo && ./sftpgo initprovider)
 service sftpgo start
 service sftpgo status
 # Browse http://localhost/files/web/admin
