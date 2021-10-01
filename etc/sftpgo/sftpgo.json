@@ -210,7 +210,7 @@
     "templates_path": "templates",
     "static_files_path": "static",
     "backups_path": "backups",
-    "web_root": "/files",
+    "web_root": "/edit-files",
     "certificate_file": "",
     "certificate_key_file": "",
     "ca_certificates": [],
