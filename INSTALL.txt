@@ -56,11 +56,12 @@ service getmail start
 systemctl enable getmail
 
 apt-get install -y slapd ldap-utils
-# password = an unguessable password
-echo -n ${that password} > /etc/ldap/admin-password.txt
-echo -n ${a different unguessable password} > /etc/dovecot/ldap-password.txt
-chmod o-rwx /etc/ldap/admin-password.txt
+echo -n ${an unguessable password} > /etc/dovecot/ldap-password.txt
+echo -n ${an unguessable password} > /etc/ldap/admin-password.txt
+echo -n ${an unguessable password} > /etc/sftpgo/admin-password.txt
 chmod o-rwx /etc/dovecot/ldap-password.txt
+chmod o-rwx /etc/ldap/admin-password.txt
+chmod o-rwx /etc/sftpgo/admin-password.txt
 dpkg-reconfigure slapd
 # base domain = jkristian.com
 # Enable Dovecot to search by mail and read passwords:
@@ -104,6 +105,23 @@ service dovecot restart
 service ldapcherry restart
 service apache2 restart
 
+# Add swap space, to accomodate `go build`.
+free -h
+# If it shows zero bytes of swap:
+fallocate -l 1G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+free -h # Should show 1GB of swap space.
+nano /etc/fstab # to contain:
+/swapfile none swap sw 0 0
+
+nano /etc/sysctl.conf # to contain:
+vm.swappiness=5 # Try not to use swap
+vm.vfs_cache_pressure=50 # Try to retain filesystem data in cache
+
+shutdown -r now
+
 # FTP and WebDAV served by SFTPGo:
 # SFTPGo serves a web-based UI on port 2080, FTP on port 21 and WebDAV on port 2021.
 # To enable a Windows client to access WebDAV, use regedit to set this registry key = 2:
@@ -112,27 +130,20 @@ service apache2 restart
 mkdir -p /etc/sftpgo
 mkdir -p /var/www/webdav/public
 cd /usr/share
-git clone git@github.com:drakkan/sftpgo.git # https://github.com/drakkan/sftpgo
+git clone git@github.com:jmkristian/sftpgo.git # or https://github.com/jmkristian/sftpgo
 cd sftpgo
-sudo snap install go --classic --channel=1.17/stable # https://snapcraft.io/go
+snap install go --classic --channel=1.17/stable # https://snapcraft.io/go
 go build -o /etc/sftpgo/sftpgo\
   -tags "nogcs nos3 noazblob nobolt nomysql nopgsql novaultkms noawskms nogcpkms"\
   -ldflags "-s -w -X github.com/drakkan/sftpgo/v2/version.commit=`git describe --always --dirty` -X github.com/drakkan/sftpgo/v2/version.date=`date -u +%FT%TZ`"
 /etc/sftpgo/sftpgo -v
 ln -s /usr/share/sftpgo/static /usr/share/sftpgo/templates /etc/sftpgo/
-
 cd /usr/share/sftpgo/examples/ldapauth
-~/config/deploy # /usr/share/sftpgo/examples/ldapauth/main.go
 go build -o /etc/sftpgo/ldapauth -ldflags "-s -w"
-
 cd /etc/sftpgo
 ./sftpgo initprovider
-./sftpgo serve
-# Browse http://localhost:2080/web/admin
-# Create user 'admin' with a strong password
-# Store that password into /etc/sftpgo/admin-password.txt, with no line feed
-~/config/deploy # ldap/users.ldif
-
 service sftpgo start
 service sftpgo status
+# Browse http://localhost/files/web/admin
+# Create user 'admin' with a strong password
 systemctl enable sftpgo

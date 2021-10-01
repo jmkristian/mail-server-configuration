@@ -197,7 +197,7 @@
     "bindings": [
       {
         "port": 2080,
-        "address": "",
+        "address": "localhost",
         "enable_web_admin": true,
         "enable_web_client": true,
         "enable_https": false,
@@ -210,7 +210,7 @@
     "templates_path": "templates",
     "static_files_path": "static",
     "backups_path": "backups",
-    "web_root": "",
+    "web_root": "/files",
     "certificate_file": "",
     "certificate_key_file": "",
     "ca_certificates": [],
