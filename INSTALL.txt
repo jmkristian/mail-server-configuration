@@ -109,12 +109,12 @@ service apache2 restart
 # To avoid this, it helps to add swap space. Here's how, on Ubuntu 20:
 free -h
 # If it shows zero bytes of swap:
-fallocate -l 1G /swapfile
+dd if=/dev/zero of=/swapfile bs=1M count=128 # = 1/8 MB
 chmod 600 /swapfile
 mkswap /swapfile
 swapon /swapfile
 free -h # Should show 1GB of swap space.
-nano /etc/fstab # to contain:
+nano /etc/fstab # to end with:
 /swapfile none swap sw 0 0
 
 nano /etc/sysctl.conf # to contain:
