@@ -3,7 +3,7 @@ objectClass: organizationalRole
 objectClass: simpleSecurityObject
 cn: dovecot
 description: Dovecot Message Delivery Agent
-userPassword: {Dovecot password}
+userPassword: {Dovecot_password}
 
 dn: ou=people,dc=jkristian,dc=com
 objectClass: organizationalUnit
