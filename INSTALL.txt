@@ -4,16 +4,11 @@ https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubunt
 # Edit /etc/systemd/journald.conf to contain:
 MaxFileSec=1day
 MaxRetentionSec=2week
+# This limits the disk space occupied by the journal.
 
 apt-get install -y postfix
 # select "Internet Site"
 # mail domain name: jkristian.com
-
-apt-get install -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
-# By the way, here's how to un-install it completely (including configuration files):
-# apt-get purge -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
-# apt-get autoremove --purge -y
-
 groupadd -g 5000 vmail
 useradd -r -g vmail -u 5000 vmail -d /var/mail/vhosts -c "virtual mail user"
 mkdir -p /var/mail/vhosts/jkristian.com
@@ -22,39 +17,7 @@ chown -R vmail:vmail /var/mail/vhosts/
 [mta1.jkristian.com]:587 getmail@jkristian.com:STRONG_PASSWORD
 [mta1.jkristian.com]     getmail@jkristian.com:STRONG_PASSWORD
 
-# Deploy the new configuration files (./deploy).
-# Test:
-service dovecot start; service postfix start
-telnet `hostname` 587
-ehlo jkristian.com
-quit
-service postfix stop; service dovecot stop
-
-apt-get install -y apache2
-a2enmod proxy
-a2enmod proxy_http
-a2enmod substitute
-a2enmod rewrite
-service apache2 restart
-# Test: browse http://`hostname`
-
-apt-get install -y php
-apt-get install -y php-{common,mysql,xml,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl}
-# Deploy the new configuration files (./deploy).
-# Test: browse http://`hostname`/info.php
-
-apt-get install -y roundcube
-# Select 'Yes' configure database with dbconfig-common.
-# Enter password = PASSWORD
-# Deploy the new configuration files (./deploy).
-# Test: browse http://`hostname`/info.php
-# Test: browse http://`hostname`/email
-
-apt-get install -y getmail
-./deploy
-service getmail start
-systemctl enable getmail
-
+# Create an LDAP directory, for authenticating users:
 apt-get install -y slapd ldap-utils
 echo -n ${an unguessable password} > /etc/dovecot/ldap-password.txt
 echo -n ${an unguessable password} > /etc/ldap/admin-password.txt
@@ -75,15 +38,48 @@ ldapsearch -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt\
 ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -y /etc/dovecot/ldap-password.txt\
     -LLL -b "dc=jkristian,dc=com" userPassword
 # To delete all the data (if needed):
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=groups,dc=jkristian,dc=com
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=people,dc=jkristian,dc=com
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt cn=dovecot,dc=jkristian,dc=com
+# ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=groups,dc=jkristian,dc=com
+# ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=people,dc=jkristian,dc=com
+# ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt cn=dovecot,dc=jkristian,dc=com
 
-# Configure Dovecot to use LDAP for authenticating users:
-service dovecot stop
-apt-get install -y dovecot-ldap
+apt-get install -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-ldap
+# By the way, here's how to un-install it completely (including configuration files):
+# apt-get purge -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
+# apt-get autoremove --purge -y
+./deploy # Deploy the new configuration files.
+# Test:
+service dovecot restart; service postfix restart
+telnet `hostname` 587
+ehlo jkristian.com
+quit
+service postfix stop; service dovecot stop
 
-# Setup LdapCherry:
+apt-get install -y apache2
+a2enmod proxy
+a2enmod proxy_http
+a2enmod substitute
+a2enmod rewrite
+service apache2 restart
+# Test: browse http://`hostname`
+
+apt-get install -y php
+apt-get install -y php-{common,mysql,xml,xmlrpc,curl,gd,imagick,cli,dev,imap,mbstring,opcache,soap,zip,intl}
+./deploy # Deploy the new configuration files.
+# Test: browse http://`hostname`/info.php
+
+apt-get install -y roundcube
+# Select 'Yes' configure database with dbconfig-common.
+# Enter password = PASSWORD
+./deploy # Deploy the new configuration files.
+service apache2 restart
+# Test: browse http://`hostname`/email
+
+apt-get install -y getmail
+./deploy
+service getmail start
+systemctl enable getmail
+
+# Setup LdapCherry (for administering user accounts):
 apt-get install -y python3-pip
 pip install cherrypy
 # To test:
@@ -95,9 +91,7 @@ pip install python-ldap
 # Download ldapcherry-1.1.1.tar.gz from https://github.com/kakwa/ldapcherry/releases
 # curl doesn't work. Maybe the links redirect.
 tar -xzof ldapcherry-*.tar.gz
-cd ldapcherry-1.1.1
-python3 setup.py install
-cd ..
+(cd ldapcherry-1.1.1 && python3 setup.py install)
 ./deploy
 systemctl enable ldapcherry
 service slapd restart
