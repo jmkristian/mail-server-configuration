@@ -5,19 +5,26 @@
     This is a place to share files. Anyone can read any file.
   </p><p>
     You can browse files starting at the URL path <a href="/files/">http:/files/</a>.
-    You can upload and download files via FTP (port 21), WebDAV on HTTP port 2121
-    or the web UI at <a href="/edit-files">http:/edit-files</a> .
-    You can log in with the username "anonymous" and any password.
-    If you log in with any other username, you can modify files in the folder whose name is your username.
-    To get a username, you can <a href="/user/selfadd">create an account</a>.
+    These URLs are useful for sharing files with other people.
+    For example, you can paste a URL into an email message, and
+    the message recipients can click the link to browse or download the file or folder.
   </p><p>
-    You can access WebDAV from Windows File Explorer by applying "Map Network Drive" to
-    a folder name like http://hostname:2121 .
-    <em>But</em> this won't work until you use regedit to set this registry key = 2:
+    You can access files via FTP (port 21), WebDAV on HTTP port 2121
+    or the web-based UI at <a href="/edit-files">http:/edit-files</a> .
+    You can log in with the username "anonymous" and any password.
+    If you log in with any other username, you can upload files
+    into the folder whose name is your username.
+    To get a username, you can <a href="/user/selfadd" target="_blank">create an account</a>.
+  </p><p>
+    You can access files in Windows File Explorer by applying "Map Network Drive" to
+    a folder name like http://hostname:2121 (the WebDAV server).
+    <em>But</em> this won't work until you
+    <a href="https://stackoverflow.com/questions/13413914/how-to-enable-basic-authentication-for-webdav-on-windows-8">set this registry key = 2</a>
+    (using regedit):
     <pre>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WebClient\Parameters\BasicAuthLevel</pre>
     The value 2 enables Windows to send a cleartext password via HTTP.
     This WebDAV server requires a cleartext password,
-    because the FCC forbids encryption over amateur radio.
+    because the FCC forbids sending encrypted data over amateur radio.
   </p>
 </body>
 </html>
