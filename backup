@@ -38,7 +38,7 @@ cp -pr "$FROM"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/
 cp -pr "$FROM"/usr/share/ldapcherry/* "$INTO"/usr/share/ldapcherry
 cp -pr "$FROM"/usr/share/roundcube/* "$INTO"/usr/share/roundcube
 cp -pr "$FROM"/var/www/html/*   "$INTO"/var/www/html/
-cp -p  "$FROM"/var/www/webdav/public/README.txt "$INTO"/var/www/webdav/public
+cp -pr "$FROM"/var/www/webdav/public/README.* "$INTO"/var/www/webdav/public/
 
 # Don't backup files that contain sensitive information, e.g. passwords.
 # Don't backup files that should not be deployed.
