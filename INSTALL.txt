@@ -4,6 +4,7 @@ https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubunt
 # Edit /etc/systemd/journald.conf to contain:
 MaxFileSec=1day
 MaxRetentionSec=2week
+# This limits the disk space occupied by the journal.
 
 apt-get install -y postfix
 # select "Internet Site"
@@ -43,8 +44,7 @@ apt-get install -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd doveco
 # By the way, here's how to un-install it completely (including configuration files):
 # apt-get purge -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
 # apt-get autoremove --purge -y
-
-# Deploy the new configuration files (./deploy).
+./deploy # Deploy the new configuration files.
 # Test:
 service dovecot restart; service postfix restart
 telnet `hostname` 587
@@ -76,7 +76,7 @@ apt-get install -y getmail
 service getmail start
 systemctl enable getmail
 
-# Setup LdapCherry:
+# Setup LdapCherry (for administering user accounts):
 apt-get install -y python3-pip
 pip install cherrypy
 # To test:
@@ -88,9 +88,7 @@ pip install python-ldap
 # Download ldapcherry-1.1.1.tar.gz from https://github.com/kakwa/ldapcherry/releases
 # curl doesn't work. Maybe the links redirect.
 tar -xzof ldapcherry-*.tar.gz
-cd ldapcherry-1.1.1
-python3 setup.py install
-cd ..
+(cd ldapcherry-1.1.1 && python3 setup.py install)
 ./deploy
 systemctl enable ldapcherry
 service slapd restart
