@@ -8,12 +8,6 @@ MaxRetentionSec=2week
 apt-get install -y postfix
 # select "Internet Site"
 # mail domain name: jkristian.com
-
-apt-get install -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
-# By the way, here's how to un-install it completely (including configuration files):
-# apt-get purge -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
-# apt-get autoremove --purge -y
-
 groupadd -g 5000 vmail
 useradd -r -g vmail -u 5000 vmail -d /var/mail/vhosts -c "virtual mail user"
 mkdir -p /var/mail/vhosts/jkristian.com
@@ -22,9 +16,37 @@ chown -R vmail:vmail /var/mail/vhosts/
 [mta1.jkristian.com]:587 getmail@jkristian.com:STRONG_PASSWORD
 [mta1.jkristian.com]     getmail@jkristian.com:STRONG_PASSWORD
 
+# Create an LDAP directory, for authenticating users:
+apt-get install -y slapd ldap-utils
+echo -n ${an unguessable password} > /etc/dovecot/ldap-password.txt
+echo -n ${an unguessable password} > /etc/ldap/admin-password.txt
+chmod o-rwx /etc/dovecot/ldap-password.txt
+chmod o-rwx /etc/ldap/admin-password.txt
+dpkg-reconfigure slapd
+# base domain = jkristian.com
+# Enable Dovecot to search by mail and read passwords:
+ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f ldap/access.ldif
+# Add Dovecot and some users to the LDAP directory:
+./expand ldap/users.ldif | ldapadd -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt
+# Check the results:
+ldapsearch -Q -Y EXTERNAL -H ldapi:/// -LLL -b "olcDatabase={1}mdb,cn=config"
+ldapsearch -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt\
+    -LLL -b "dc=jkristian,dc=com"
+ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -y /etc/dovecot/ldap-password.txt\
+    -LLL -b "dc=jkristian,dc=com" userPassword
+# To delete all the data (if needed):
+# ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=groups,dc=jkristian,dc=com
+# ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=people,dc=jkristian,dc=com
+# ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt cn=dovecot,dc=jkristian,dc=com
+
+apt-get install -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-ldap
+# By the way, here's how to un-install it completely (including configuration files):
+# apt-get purge -y dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd
+# apt-get autoremove --purge -y
+
 # Deploy the new configuration files (./deploy).
 # Test:
-service dovecot start; service postfix start
+service dovecot restart; service postfix restart
 telnet `hostname` 587
 ehlo jkristian.com
 quit
@@ -53,32 +75,6 @@ apt-get install -y getmail
 ./deploy
 service getmail start
 systemctl enable getmail
-
-apt-get install -y slapd ldap-utils
-echo -n ${an unguessable password} > /etc/dovecot/ldap-password.txt
-echo -n ${an unguessable password} > /etc/ldap/admin-password.txt
-chmod o-rwx /etc/dovecot/ldap-password.txt
-chmod o-rwx /etc/ldap/admin-password.txt
-dpkg-reconfigure slapd
-# base domain = jkristian.com
-# Enable Dovecot to search by mail and read passwords:
-ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f ldap/access.ldif
-# Add Dovecot and some users to the LDAP directory:
-./expand ldap/users.ldif | ldapadd -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt
-# Check the results:
-ldapsearch -Q -Y EXTERNAL -H ldapi:/// -LLL -b "olcDatabase={1}mdb,cn=config"
-ldapsearch -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt\
-    -LLL -b "dc=jkristian,dc=com"
-ldapsearch -x -D "cn=dovecot,dc=jkristian,dc=com" -y /etc/dovecot/ldap-password.txt\
-    -LLL -b "dc=jkristian,dc=com" userPassword
-# To delete all the data (if needed):
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=groups,dc=jkristian,dc=com
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt -r ou=people,dc=jkristian,dc=com
-ldapdelete -x -D "cn=admin,dc=jkristian,dc=com" -y /etc/ldap/admin-password.txt cn=dovecot,dc=jkristian,dc=com
-
-# Configure Dovecot to use LDAP for authenticating users:
-service dovecot stop
-apt-get install -y dovecot-ldap
 
 # Setup LdapCherry:
 apt-get install -y python3-pip
