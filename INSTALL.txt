@@ -31,6 +31,10 @@ quit
 service postfix stop; service dovecot stop
 
 apt-get install -y apache2
+a2enmod proxy
+a2enmod proxy_http
+a2enmod substitute
+service apache2 restart
 # Test: browse http://`hostname`
 
 apt-get install -y php
@@ -43,7 +47,6 @@ apt-get install -y roundcube
 # Enter password = PASSWORD
 # Deploy the new configuration files (./deploy).
 service apache2 restart
-# Test: browse http://`hostname`/info.php
 # Test: browse http://`hostname`/email
 
 apt-get install -y getmail
@@ -52,11 +55,10 @@ service getmail start
 systemctl enable getmail
 
 apt-get install -y slapd ldap-utils
-# password = an unguessable password
-echo -n ${that password} > /etc/ldap/admin-password.txt
-echo -n ${a different unguessable password} > /etc/dovecot/ldap-password.txt
-chmod o-rwx /etc/ldap/admin-password.txt
+echo -n ${an unguessable password} > /etc/dovecot/ldap-password.txt
+echo -n ${an unguessable password} > /etc/ldap/admin-password.txt
 chmod o-rwx /etc/dovecot/ldap-password.txt
+chmod o-rwx /etc/ldap/admin-password.txt
 dpkg-reconfigure slapd
 # base domain = jkristian.com
 # Enable Dovecot to search by mail and read passwords:
@@ -92,9 +94,6 @@ pip install python-ldap
 tar -xzof ldapcherry-*.tar.gz
 cd ldapcherry-1.1.1
 python3 setup.py install
-a2enmod proxy
-a2enmod proxy_http
-a2enmod substitute
 cd ..
 ./deploy
 systemctl enable ldapcherry
