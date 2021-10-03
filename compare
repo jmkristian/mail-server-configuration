@@ -9,7 +9,7 @@ TO="${2:-.}"
 cd `dirname "$0"` || exit $?
 # echo "FROM=$FROM" "TO=$TO"
 for FILE in \
-    `find "$TO"/etc "$TO"/var -type f | sed -e "s:^$TO/::" | grep -v '~$' | grep -v '^etc/postfix/.*\.db$'`
+    `find "$TO"/etc "$TO"/usr "$TO"/var -type f | sed -e "s:^$TO/::" | grep -v '~$' | grep -v '^etc/postfix/.*\.db$'`
 do
     # echo "FILE=$FILE"
     if [ -e "$FROM"/"$FILE" ]; then

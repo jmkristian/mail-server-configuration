@@ -13,6 +13,7 @@ mkdir -p\
       "$INTO"/etc/postfix\
       "$INTO"/etc/roundcube\
       "$INTO"/etc/systemd/system\
+      "$INTO"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry\
       "$INTO"/usr/share/ldapcherry\
       "$INTO"/usr/share/roundcube\
       "$INTO"/var/www/html
@@ -26,10 +27,12 @@ cp -pr "$FROM"/etc/ldapcherry/* "$INTO"/etc/ldapcherry/
 cp -p  "$FROM"/etc/logrotate.d/getmail "$INTO"/etc/logrotate.d/
 cp -pr "$FROM"/etc/postfix/*   "$INTO"/etc/postfix/
 cp -pr "$FROM"/etc/roundcube/* "$INTO"/etc/roundcube/
-cp -pr "$FROM"/usr/share/ldapcherry/* "$INTO"/usr/share/ldapcherry
-cp -pr "$FROM"/usr/share/roundcube/* "$INTO"/usr/share/roundcube
 cp -pr "$FROM"/etc/systemd/system/getmail.service "$INTO"/etc/systemd/system/
 cp -pr "$FROM"/etc/systemd/system/ldapcherry.service "$INTO"/etc/systemd/system/
+cp -pr "$FROM"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry/*\
+       "$INTO"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry
+cp -pr "$FROM"/usr/share/ldapcherry/* "$INTO"/usr/share/ldapcherry
+cp -pr "$FROM"/usr/share/roundcube/* "$INTO"/usr/share/roundcube
 cp -pr "$FROM"/var/www/html/*   "$INTO"/var/www/html/
 
 # Don't backup files that contain sensitive information, e.g. passwords.
@@ -48,5 +51,7 @@ rm -f "$INTO"/etc/postfix/post-install
 rm -f "$INTO"/etc/postfix/postfix-files
 rm -f "$INTO"/etc/postfix/postfix-script
 rm -f "$INTO"/etc/postfix/sasl_passwd
+find "$INTO"/usr/local/lib/python3.8/dist-packages -type d -name '__pycache__'\
+    | xargs -d '\n' rm -rf
 find "$INTO"/usr/share/roundcube -type f \( -name '*.gif' -o -name '*.png' -o -name '*.svg' \) \
     | xargs -d '\n' rm -f
