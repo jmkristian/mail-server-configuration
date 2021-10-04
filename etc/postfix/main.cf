@@ -59,6 +59,7 @@ smtpd_tls_security_level=may
 smtpd_sasl_auth_enable = yes
 # But don't require clients to authenticate.
 # The putmail client should, but other clients might not.
+smtpd_tls_auth_only = yes
 # smtpd_sasl_security_options = noanonymous noplaintext
 # smtpd_sasl_tls_security_options = noanonymous
 
