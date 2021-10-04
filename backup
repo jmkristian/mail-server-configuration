@@ -52,6 +52,7 @@ rm -f "$INTO"/etc/ldap/admin-password.txt
 rm -rf "$INTO"/etc/ldap/slapd.d/cn=config
 rm -f "$INTO"/etc/ldap/slapd.d/cn=config.ldif
 rm -f "$INTO"/etc/ldapcherry/ldapcherry.ini
+rm -f "$INTO"/etc/postfix/*.db
 rm -f "$INTO"/etc/postfix/post-install
 rm -f "$INTO"/etc/postfix/postfix-files
 rm -f "$INTO"/etc/postfix/postfix-script
