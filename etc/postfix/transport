@@ -1,6 +1,7 @@
 # Internal delivery.
 jkristian.com  :
 .jkristian.com :
+w6jmk-postoffice.local.mesh :
 
 # External delivery.
 .local.mesh smtp:

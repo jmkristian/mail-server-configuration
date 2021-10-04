@@ -1,1 +1,4 @@
+# The following keys are email domains whose mail is delivered to virtual mailboxes.
+# The values aren't significant.
 jkristian.com anAcceptedDomain
+w6jmk-postoffice.local.mesh alsoAccepted

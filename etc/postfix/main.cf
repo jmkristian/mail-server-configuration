@@ -42,7 +42,7 @@ smtpd_sasl_path = private/auth
 
 # Some @domains are handled by Dovecot:
 virtual_transport = lmtp:unix:private/dovecot-lmtp
-virtual_mailbox_domains = /etc/postfix/virtual_mailbox_domains
+virtual_mailbox_domains = hash:/etc/postfix/virtual_mailbox_domains
 
 # The rest are relayed to various MTAs (depending on the recipient address):
 transport_maps = hash:/etc/postfix/transport
