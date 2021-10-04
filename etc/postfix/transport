@@ -1,12 +1,14 @@
-# Internal delivery.
+# Messages to some domains are delivered to virtual mailboxes on this server:
 jkristian.com  :
 .jkristian.com :
 w6jmk-postoffice.local.mesh :
 
-# External delivery.
+# Messages to some domains are relayed directly to servers on the mesh:
 .local.mesh smtp:
-# That is, treat the email domain as a computer name,
-# and connect to the SMTP server on that computer.
+# There are no MX records for these domains, consequently
+# Postfix treats the email domain as a computer name,
+# and connects to the SMTP server on that computer.
 
+# All other messages are relayed to a server in the public Internet:
 * smtp:[mta1.jkristian.com]:587
 # The brackets [] say 'don't look for MX records'
