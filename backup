@@ -3,6 +3,7 @@
 FROM="$1"
 INTO="${2:-.}"
 cd `dirname "$0"` || exit $?
+
 mkdir -p\
       "$INTO"/etc/apache2\
       "$INTO"/etc/dovecot\
@@ -14,6 +15,7 @@ mkdir -p\
       "$INTO"/etc/roundcube\
       "$INTO"/etc/sftpgo\
       "$INTO"/etc/systemd/system\
+      "$INTO"/usr/lib/cgi-bin\
       "$INTO"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry\
       "$INTO"/usr/share/ldapcherry\
       "$INTO"/usr/share/roundcube\
@@ -33,6 +35,7 @@ cp -pr "$FROM"/etc/sftpgo/sftpgo.json "$INTO"/etc/sftpgo/
 cp -pr "$FROM"/etc/systemd/system/getmail.service "$INTO"/etc/systemd/system/
 cp -pr "$FROM"/etc/systemd/system/ldapcherry.service "$INTO"/etc/systemd/system/
 cp -pr "$FROM"/etc/systemd/system/sftpgo.service "$INTO"/etc/systemd/system/
+cp -p  "$FROM"/usr/lib/cgi-bin/meshchatconfig.pm "$INTO"/usr/lib/cgi-bin/
 cp -pr "$FROM"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry/*\
        "$INTO"/usr/local/lib/python3.8/dist-packages/ldapcherry-1.1.1-py3.8.egg/ldapcherry
 cp -pr "$FROM"/usr/share/ldapcherry/* "$INTO"/usr/share/ldapcherry
