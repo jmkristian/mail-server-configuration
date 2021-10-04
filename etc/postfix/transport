@@ -1,6 +1,11 @@
 # Internal delivery.
 jkristian.com  :
 .jkristian.com :
+
 # External delivery.
+.local.mesh smtp:
+# That is, treat the email domain as a computer name,
+# and connect to the SMTP server on that computer.
+
 * smtp:[mta1.jkristian.com]:587
 # The brackets [] say 'don't look for MX records'

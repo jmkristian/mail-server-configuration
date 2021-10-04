@@ -25,7 +25,7 @@ compatibility_level = 2
 
 # TLS parameters
 # smtp_use_tls=yes obsoleted by:
-smtp_tls_security_level=encrypt
+smtp_tls_security_level=may
 smtp_tls_CApath=/etc/ssl/certs
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
@@ -44,8 +44,8 @@ smtpd_sasl_path = private/auth
 virtual_transport = lmtp:unix:private/dovecot-lmtp
 virtual_mailbox_domains = /etc/postfix/virtual_mailbox_domains
 
-# The rest are relayed to one MTA (regardless of the destination address).
-relayhost = [mta1.jkristian.com]:587
+# The rest are relayed to various MTAs (depending on the recipient address):
+transport_maps = hash:/etc/postfix/transport
 smtp_sasl_auth_enable = yes
 smtp_sasl_type = cyrus
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
