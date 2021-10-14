@@ -13,6 +13,8 @@ for FILE in `find etc usr var -type f | grep -v '~$' | grep -v '^etc/postfix/.*\
         fi
     }
 done
+echo cp -p -P 'etc/apache2/conf-enabled/*' /etc/apache2/conf-enabled/
+cp -p -P etc/apache2/conf-enabled/* /etc/apache2/conf-enabled/
 # Insert private information into templates:
 for TEMPLATE in\
     "$INTO"/etc/dovecot/*.template\

@@ -22,6 +22,8 @@ mkdir -p\
       "$INTO"/var/www/html\
       "$INTO"/var/www/webdav/public\
 
+cp -pr "$FROM"/etc/apache2/conf-available "$INTO"/etc/apache2/
+cp -pr "$FROM"/etc/apache2/conf-enabled "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/apache2/sites-available "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/apache2/sites-enabled "$INTO"/etc/apache2/
 cp -pr "$FROM"/etc/dovecot/*   "$INTO"/etc/dovecot/
