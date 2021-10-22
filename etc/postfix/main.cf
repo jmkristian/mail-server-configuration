@@ -31,8 +31,8 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
 # smtpd_use_tls=no obsoleted by:
 smtpd_tls_security_level=none
-# smtpd_tls_cert_file=/etc/letsencrypt/live/postoffice.jkristian.com/certificate.pem
-# smtpd_tls_key_file=/etc/letsencrypt/live/postoffice.jkristian.com/private_key.pem
+# smtpd_tls_cert_file=/etc/letsencrypt/live/w6jmk-postoffice.jkristian.com/fullchain.pem
+# smtpd_tls_key_file=/etc/letsencrypt/live/w6jmk-postoffice.jkristian.com/privkey.pem
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated reject_unauth_destination
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 
