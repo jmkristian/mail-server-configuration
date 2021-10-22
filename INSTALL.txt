@@ -1,10 +1,15 @@
 Here's how the packages were installed, as recommended by:
 https://www.vultr.com/docs/how-to-install-postfix-dovecot-and-roundcube-on-ubuntu-20-04
 
-# Edit /etc/systemd/journald.conf to contain:
+sudo bash # Run all the following commands as root.
+
+# Turn off cloud services:
+touch /etc/cloud/cloud-init.disabled
+
+# To limit the disk space occupied by the journal,
+# edit /etc/systemd/journald.conf to contain:
 MaxFileSec=1day
 MaxRetentionSec=2week
-# This limits the disk space occupied by the journal.
 
 apt-get install -y postfix
 # select "Internet Site"
