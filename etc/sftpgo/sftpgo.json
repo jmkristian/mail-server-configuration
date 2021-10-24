@@ -219,7 +219,7 @@
     "max_upload_file_size": 1048576000
   },
   "telemetry": {
-    "bind_port": 10000,
+    "bind_port": 2100,
     "bind_address": "127.0.0.1",
     "enable_profiler": false,
     "auth_user_file": "",
