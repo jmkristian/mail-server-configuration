@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>EMail Server</title>
+  </head>
+  <body>
+    <p>
+      W6JMK-postoffice is an email server using IMAP, POP and SMTP protocols.
+      It's compatible with many email apps that you can run on your computer, tablet or smartphone,
+      such as Outlook, Microsoft Mail and Thunderbird.
+    </p><p>
+      To get started, <a href="/user/selfadd" target="_blank">create an account</a>.
+      Install an email client app, and configure it with:
+      <ul>
+        <li>email address = &lt;your call sign&gt;@jkristian.com</li>
+        <li>user name = your call sign</li>
+        <li>password = your password</li>
+        <li>incoming email protocol = IMAP or IMAP4
+          (or POP or POP3, if your app doesn't support IMAP)</li>
+        <li>IMAP server = w6jmk-postoffice.local.mesh</li>
+        <li>IMAP server port = 143 (the default)</li>
+        <li>SMTP server = w6jmk-postoffice.local.mesh</li>
+        <li>SMTP server port = 587 (the default)</li>
+        <li>don't use SSL or TLS encryption for security</li>
+        <li>don't use Secure Password Authentication (SPA)</li>
+      </ul>
+    </p><p>
+      Email messages are automatically relayed between this server and other email servers
+      in the public Internet.
+      That is, messages sent from the Internet to &lt;your call sign&gt;@jkristian.com
+      will be delivered to your mailbox in this server.
+      And you can send email from &lt;your call sign&gt;@jkristian.com to the Internet via this server.
+      For example, you can exchange email with &lt;call sign&gt;@winlink.org,
+      via this server and the Winlink CMS (Common Message Servers).
+    </p><p>
+      Your messages are encrypted for privacy when they're sent over the public Internet.
+      But they're not encrypted when they're sent between W6JMK-postoffice and your computer,
+      because sending encrypted data via amateur radio is illegal in the U.S.A.
+    </p><p>
+      Here's how to configure Microsoft Mail (the email app bundled with Windows 10).
+      Click 'Accounts' and 'Add account':
+      <br/><img src="msmail-1.jpg"/><br/>
+    </p><p>
+      Click 'Advanced setup':
+      <br/><img src="msmail-2.jpg"/><br/>
+    </p><p>
+      Click 'Internet email':
+      <br/><img src="msmail-3.jpg"/><br/>
+    </p><p>
+      Fill out the form and click 'Sign in'.
+      <br/><img src="msmail-4.jpg"/><br/>
+    </p><p>
+      To configure the Outlook app (not outlook.com):
+      <ol>
+        <li>Click 'File', 'Add Account', 'Manual setup', 'Next' and 'POP or IMAP'.</li>
+        <li>Fill out the form.</li>
+        <li>Click 'More Settings' and the 'Outgoing Server' tab.</li>
+        <li>Check the boxes 'My outgoing server (SMTP) requires authentication'
+          and 'Use same settings as my incoming mail server'.</li>
+        <li>Click the 'Advanced' tab.</li>
+        <li>Enter IMAP port 143 and SMTP port 587 and select non-encrypted connections.</li>
+        <li>Click 'OK' and 'Next'.</li>
+        <li>Confirm you're logged in. If not, go back and check your settings.</li>
+        <li>Click 'Close' and 'Finish'.</li>
+      </ol>
+    </p><p>
+      You can change your password <a href="/user/selfmodify" target="_blank">here</a>.
+      Log in with your old password, enter your new password twice and click 'Modify'.
+    </p>
+  </body>
+</html>
