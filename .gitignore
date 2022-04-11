@@ -1,2 +1,7 @@
 *~
+etc/dovecot/users
+etc/opendkim/*.private
 etc/postfix/*.db
+etc/postfix/makedefs.out
+etc/postfix/sasl
+etc/postfix/sasl2
