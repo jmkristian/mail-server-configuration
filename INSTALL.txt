@@ -87,9 +87,9 @@ usermod -G opendkim postfix
 service opendkim restart
 service postfix restart
 
-# Configure the DNS server for jkristian.com to publish DNS records:
+# Publish DNS records (to the DNS service that serves jkristian.com):
 jkristian.com IN MX 10 mta1.jkristian.com.
-jkristian.com IN SPF "v=spf1 mx a ?all"
+jkristian.com IN TXT "v=spf1 mx a ?all"
 # Copied from /etc/opendkim/$SELECTOR.txt
 $SELECTOR._domainkey.mta1.jkristian.com IN TXT "v=DKIM1; blah blah blah"
 
